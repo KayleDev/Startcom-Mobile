@@ -1,3 +1,8 @@
+# Startcom
+
+Aplicativo mobile feito com React Native para um trabalho de conclusão de curso que se trata de uma plataforma gerenciadora de pequenos e médios negócios.
+
+
 ## (RECOMENDADO) Gerar APK Release
 Caso queira rodar o app sem instalar Node, JDK ou Android Studio:
 
@@ -10,11 +15,6 @@ O APK gerado ficará em:
 android/app/build/outputs/apk/release/app-release.apk
 
 Basta copiar para o celular e instalar manualmente
-
-# Startcom
-
-Aplicativo mobile feito com React Native para um trabalho de conclusão de curso que se trata de uma plataforma gerenciadora de pequenos e médios negócios.
-
 ---
 
 ## Pré-requisitos
