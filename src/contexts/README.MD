@@ -1,0 +1,1 @@
+# Context API (e.g., AuthContext, ThemeContext)

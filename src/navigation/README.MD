@@ -1,0 +1,1 @@
+# React Navigation configuration (stack, tab, drawer)
