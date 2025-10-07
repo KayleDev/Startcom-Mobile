@@ -8,11 +8,15 @@
     "ios": "expo start --ios",
     "web": "expo start --web"
   },
+  "devDependencies": {
+    "@react-native-community/cli": "latest"
+  },
   "dependencies": {
     "@react-native-async-storage/async-storage": "^2.2.0",
     "@react-navigation/bottom-tabs": "^7.4.7",
-    "@react-navigation/native": "^7.1.17",
+    "@react-navigation/native": "^7.1.18",
     "@react-navigation/native-stack": "^7.3.26",
+    "@react-navigation/stack": "^7.4.9",
     "axios": "^1.12.2",
     "expo": "^54.0.10",
     "expo-status-bar": "~3.0.8",

@@ -1,1 +1,0 @@
-# Application screens (Login, Home, Profile)
