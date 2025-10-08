@@ -10,11 +10,40 @@ export const styles = StyleSheet.create({
     padding: 20,
   },
 
+  logoImage: {
+    width: 128,
+    height: 128,
+  },
+
   title: {
     fontSize: 26,
     color: globalStyle.quaternary,
-    marginBottom: 24,
     fontFamily: globalStyle.fontBold,
+  },
+
+  subtitle: {
+    fontSize: 18,
+    color: globalStyle.quaternary,
+    marginBottom: 40,
+    fontFamily: globalStyle.fontRegular,
+  },
+
+  loginOrWith: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 8,
+    marginBottom: 16,
+  },
+
+  textLineLoginWith: {
+    color: globalStyle.quaternary,
+  },
+
+  lineLoginWith: {
+    borderBottomColor: globalStyle.quaternary,
+    borderBottomWidth: StyleSheet.hairlineWidth,
+    flex: 1,
+    height: 1,
   },
 
   loginWithContainer: {
@@ -28,11 +57,11 @@ export const styles = StyleSheet.create({
   loginWithButton: {
     backgroundColor: globalStyle.secondary,
     justifyContent: "center",
-    borderRadius: 5,
+    borderRadius: globalStyle.borderRadius,
     flex: 1,
     flexDirection: "row",
     alignItems: "center",
-    gap: 6,
+    gap: 3,
     height: 48,
   },
 
@@ -64,11 +93,12 @@ export const styles = StyleSheet.create({
   },
 
   keepConnectedText: {
-    marginLeft: 8,
+    marginLeft: 10,
     fontFamily: globalStyle.fontRegular,
   },
 
   linkText: {
+    marginTop: 20,
     color: globalStyle.tertiary,
     fontSize: 14,
     fontFamily: globalStyle.fontRegular,

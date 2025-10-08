@@ -10,6 +10,7 @@ import { styles } from "./styles";
 
 import GoogleLogo from '../../../assets/icons/GoogleLogo.png';
 import AppleLogo from '../../../assets/icons/AppleLogo.png';
+import Logo from '../../../assets/StartComLogo.png';
 
 const Login = () => {
   const navigation = useNavigation();
@@ -48,20 +49,34 @@ const Login = () => {
 
   return (
     <View style={styles.container}>
+      <Image
+      style={styles.logoImage}
+      source={Logo}
+      />
+
       <Text style={styles.title}>Entrar</Text>
+      <Text style={styles.subtitle}>Bem-vindo(a) de volta</Text>
 
       <Input 
         label="E-mail" 
         keyboardType="email-address" 
+        placeholder="Digite o seu e-mail"
         value={email} 
         onChangeText={setEmail} 
       />
       <Input 
         label="Senha" 
+        placeholder="Digite a sua senha"
         secureTextEntry={true}
         value={password} 
         onChangeText={setPassword} 
       />
+
+      <View style={styles.loginOrWith}>
+        <View style={styles.lineLoginWith}></View>
+        <Text style={styles.textLineLoginWith}>Ou</Text>
+        <View style={styles.lineLoginWith}></View>
+      </View>
 
       <View style={styles.loginWithContainer}>
         <TouchableOpacity style={styles.loginWithButton}>
@@ -94,7 +109,10 @@ const Login = () => {
 
       <TouchableOpacity onPress={() => navigation.navigate("Register")}>
         <Text style={styles.linkText}>
-          Não tem uma conta? Cadastre-se
+          Não tem uma conta? {""}
+          <Text style={{ fontWeight: "bold" }}>
+            Cadastre-se agora
+          </Text>
         </Text>
       </TouchableOpacity>
     </View>

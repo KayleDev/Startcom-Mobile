@@ -6,7 +6,7 @@ export const styles = StyleSheet.create({
         width: "100%",
         height: 48,
         backgroundColor: globalStyle.primary,
-        borderRadius: 5,
+        borderRadius: globalStyle.borderRadius,
         justifyContent: "center",
         alignItems: "center",
         marginBottom: 16,

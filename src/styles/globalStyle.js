@@ -9,6 +9,8 @@ export const globalStyle = {
   componentBackgroundColor: '#F1F1F1',
   primaryLayoutBackgroundColor: '#0D0A0A',
 
+  borderRadius: 8,
+
   fontRegular: "Open-Sans",
   fontBold: "Open-Sans-Bold",
 }

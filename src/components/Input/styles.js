@@ -6,7 +6,7 @@ export const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     backgroundColor: globalStyle.secondary,
-    borderRadius: 5,
+    borderRadius: globalStyle.borderRadius,
     paddingHorizontal: 12,
     height: 48,
     width: "100%",
@@ -21,5 +21,6 @@ export const styles = StyleSheet.create({
   },
   eyeButton: {
     marginLeft: 8,
+    opacity: 0.6
   },
 });
