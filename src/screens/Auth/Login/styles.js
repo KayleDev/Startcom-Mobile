@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-import { globalStyle } from "../../../styles/globalStyle.js"
+import { globalStyle } from "../../../styles/globalStyle.js";
 
 export const styles = StyleSheet.create({
   container: {
@@ -17,41 +17,23 @@ export const styles = StyleSheet.create({
     marginBottom: 24,
   },
 
-  button: {
-    width: "100%",
-    height: 48,
-    backgroundColor: "#007bff",
-    borderRadius: 5,
-    justifyContent: "center",
-    alignItems: "center",
-    marginBottom: 16,
-  },
-
-  buttonText: {
-    color: "#fff",
-    fontSize: 18,
-    fontWeight: "bold",
-  },
-
   loginWithContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
-    alignItems: "center",
-    gap: 10,
+    width: "100%",
+    gap: 8,
+    marginBottom: 16,
   },
 
   loginWithButton: {
     backgroundColor: globalStyle.secondary,
-    paddingVertical: 10,
-    paddingHorizontal: 15,
     justifyContent: "center",
     borderRadius: 5,
-    width: "49%",
-    height: 48,
-    marginBottom: 16,
+    flex: 1,
     flexDirection: "row",
     alignItems: "center",
-    gap: 6
+    gap: 6,
+    height: 48,
   },
 
   loginWithText: {
@@ -59,8 +41,33 @@ export const styles = StyleSheet.create({
     color: "#000",
   },
 
+  loginWithImage: {
+    width: 24,
+    height: 24,
+  },
+
+  keepConnectedContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: 20,
+    alignSelf: "flex-start",
+  },
+
+  checkbox: {
+    width: 18,
+    height: 18,
+    borderWidth: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: 5,
+  },
+
+  keepConnectedText: {
+    marginLeft: 8,
+  },
+
   linkText: {
-    color: "#007bff",
+    color: globalStyle.tertiary,
     fontSize: 14,
   },
 });

@@ -14,7 +14,6 @@ const Input = ({ label, keyboardType, value, onChangeText, secureTextEntry = fal
         <TextInput
           key={isSecure ? "secure" : "text"}
           style={styles.inputField}
-          placeholder={label}
           keyboardType={keyboardType}
           value={value}
           onChangeText={onChangeText}

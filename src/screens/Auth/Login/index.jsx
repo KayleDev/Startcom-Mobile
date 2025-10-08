@@ -2,7 +2,8 @@ import { useState } from 'react';
 import { View, Text, Image, TouchableOpacity, Alert } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { MaterialIcons } from '@expo/vector-icons';
-import Input from "../../../components/Input/"
+import Button from '../../../components/Button';
+import Input from "../../../components/Input/";
 import axios from 'axios';
 
 import { styles } from "./styles";
@@ -27,11 +28,7 @@ const Login = () => {
     setLoading(true);
 
     try {
-      const response = await axios.post('http://my-backend.com/login', {
-        email,
-        password
-      });
-
+      const response = await axios.post('http://my-backend.com/login', { email, password });
       const data = response.data;
 
       if (data.success) {
@@ -41,14 +38,13 @@ const Login = () => {
       } else {
         Alert.alert("Erro", data.message || "Login falhou");
       }
-
     } catch (error) {
       console.error(error);
       Alert.alert("Erro", "Não foi possível conectar ao servidor");
     } finally {
       setLoading(false);
     }
-  }
+  };
 
   return (
     <View style={styles.container}>
@@ -69,40 +65,31 @@ const Login = () => {
 
       <View style={styles.loginWithContainer}>
         <TouchableOpacity style={styles.loginWithButton}>
-          <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
-            <Image source={GoogleLogo} style={{ width: 24, height: 24 }} />
-            <Text style={styles.loginWithText}>Entrar com Google</Text>
-          </View>
+          <Image source={GoogleLogo} style={styles.loginWithImage} />
+          <Text style={styles.loginWithText}>Entrar com Google</Text>
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.loginWithButton}>
-          <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
-            <Image source={AppleLogo} style={{ width: 24, height: 24 }} />
-            <Text style={styles.loginWithText}>Entrar com Apple</Text>
-          </View>
+          <Image source={AppleLogo} style={styles.loginWithImage} />
+          <Text style={styles.loginWithText}>Entrar com Apple</Text>
         </TouchableOpacity>
       </View>
 
-      <TouchableOpacity style={styles.button} onPress={handleLogin} disabled={loading}>
-        <Text style={styles.buttonText}>{loading ? "Carregando..." : "Login"}</Text>
-      </TouchableOpacity>
+      <Button
+        title="Login" 
+        onPress={handleLogin} 
+        loading={loading} 
+      />
 
-      <View style={{ flexDirection: "row", alignItems: "center", marginBottom: 20, alignSelf: "flex-start" }}>
+      <View style={styles.keepConnectedContainer}>
         <TouchableOpacity
           onPress={() => setChecked(!checked)}
-          style={{
-            width: 16,
-            height: 16,
-            borderWidth: 2,
-            justifyContent: "center",
-            alignItems: "center",
-            borderRadius: 5,
-          }}
+          style={styles.checkbox}
         >
-          {checked && <MaterialIcons name="check" size={12} color="#007bff" />}
+          {checked && <MaterialIcons name="check" size={14} color="#007bff" />}
         </TouchableOpacity>
 
-        <Text style={{ marginLeft: 8 }}>Manter-me conectado por 30 dias</Text>
+        <Text style={styles.keepConnectedText}>Manter-me conectado por 30 dias</Text>
       </View>
 
       <TouchableOpacity onPress={() => navigation.navigate("Register")}>
@@ -111,7 +98,7 @@ const Login = () => {
         </Text>
       </TouchableOpacity>
     </View>
-  )
-}
+  );
+};
 
 export default Login;
