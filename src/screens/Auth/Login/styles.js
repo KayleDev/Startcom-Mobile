@@ -12,9 +12,9 @@ export const styles = StyleSheet.create({
 
   title: {
     fontSize: 26,
-    fontWeight: "bold",
-    color: "#333",
+    color: globalStyle.quaternary,
     marginBottom: 24,
+    fontFamily: globalStyle.fontBold,
   },
 
   loginWithContainer: {
@@ -39,6 +39,7 @@ export const styles = StyleSheet.create({
   loginWithText: {
     fontSize: 14,
     color: "#000",
+    fontFamily: globalStyle.fontRegular,
   },
 
   loginWithImage: {
@@ -64,10 +65,12 @@ export const styles = StyleSheet.create({
 
   keepConnectedText: {
     marginLeft: 8,
+    fontFamily: globalStyle.fontRegular,
   },
 
   linkText: {
     color: globalStyle.tertiary,
     fontSize: 14,
+    fontFamily: globalStyle.fontRegular,
   },
 });

@@ -11,6 +11,10 @@ export const styles = StyleSheet.create({
     height: 48,
     width: "100%",
   },
+  labelText: {
+    marginBottom: 4,
+    fontFamily: globalStyle.fontRegular,
+  },
   inputField: {
     flex: 1,
     fontSize: 16,

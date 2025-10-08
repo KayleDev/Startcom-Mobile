@@ -8,7 +8,7 @@ const Input = ({ label, keyboardType, value, onChangeText, secureTextEntry = fal
 
   return (
     <View style={{ marginBottom: 16 }}>
-      {label && <Text style={{ marginBottom: 4 }}>{label}</Text>}
+      {label && <Text style={styles.labelText}>{label}</Text>}
 
       <View style={styles.inputContainer}>
         <TextInput

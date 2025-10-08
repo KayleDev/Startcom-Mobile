@@ -86,7 +86,7 @@ const Login = () => {
           onPress={() => setChecked(!checked)}
           style={styles.checkbox}
         >
-          {checked && <MaterialIcons name="check" size={14} color="#007bff" />}
+          {checked && <MaterialIcons name="check" size={14} color="globalStyle.primary" />}
         </TouchableOpacity>
 
         <Text style={styles.keepConnectedText}>Manter-me conectado por 30 dias</Text>
