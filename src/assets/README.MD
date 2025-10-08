@@ -1,1 +1,0 @@
-# Static images, icons, fonts, sounds

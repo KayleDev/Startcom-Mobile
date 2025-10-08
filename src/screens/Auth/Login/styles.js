@@ -49,6 +49,9 @@ export const styles = StyleSheet.create({
     width: "49%",
     height: 48,
     marginBottom: 16,
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 6
   },
 
   loginWithText: {
