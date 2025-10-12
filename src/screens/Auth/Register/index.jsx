@@ -85,12 +85,12 @@ const Register = () => {
         <Input
           label="Telefone"
           placeholder="(13) 99999-9999"
-          keyboardType="numeric"  // Adicione isso também
+          keyboardType="numeric"
           formatPHONE={formatPHONE}
           value={phone}
           onChangeText={setPhone}
           style={{ width: '49%', marginBottom: 0 }}
-          maxLength={15}  // Adicione isso para limitar o tamanho
+          maxLength={15}
         />
       </View>
 

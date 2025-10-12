@@ -32,10 +32,14 @@ const Login = () => {
       const response = await axios.post('http://my-backend.com/login', { email, password });
       const data = response.data;
 
-      if (data.success) {
+      const dataMock = true;
+
+      // if (data.success) {
+      if (dataMock) {
         Alert.alert("Sucesso", "Login realizado!");
-        console.log("Token do usuário:", data.token);
-        // ex: navigation.navigate("Home");
+        // console.log("Token do usuário:", data.token);
+        console.log("Token do usuário:", "mocked-jwt-token");
+        navigation.navigate("Dashboard");
       } else {
         Alert.alert("Erro", data.message || "Login falhou");
       }
