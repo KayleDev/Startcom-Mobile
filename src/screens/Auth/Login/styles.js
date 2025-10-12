@@ -51,7 +51,6 @@ export const styles = StyleSheet.create({
     justifyContent: "space-between",
     width: "100%",
     gap: 8,
-    marginBottom: 16,
   },
 
   loginWithButton: {
