@@ -49,7 +49,7 @@ export const formatCNPJ = (value) => {
 // Examples:
 // "11987654321" -> "(11) 98765-4321"
 // "1134567890"  -> "(11) 3456-7890"
-export const formatPhone = (value) => {
+export const formatPHONE = (value) => {
   // Remove all non-digit characters
   const cleaned = value.replace(/\D/g, "");
   

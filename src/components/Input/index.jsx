@@ -3,8 +3,13 @@ import { View, TextInput, Text, TouchableOpacity } from "react-native";
 import { MaterialIcons } from '@expo/vector-icons';
 import { styles } from "./styles.js";
 
-const Input = ({ label, placeholder, keyboardType, value, onChangeText, secureTextEntry = false, style }) => {
+const Input = ({ label, placeholder, keyboardType, value, onChangeText, secureTextEntry = false, formatPHONE, style, maxLength }) => {
   const [isSecure, setIsSecure] = useState(secureTextEntry);
+
+  const handleChangeText = (text) => {
+    const formatted = formatPHONE ? formatPHONE(text) : text;
+    onChangeText(formatted);
+  };
 
   return (
     <View style={[{ marginBottom: 16 }, style]}>
@@ -18,8 +23,9 @@ const Input = ({ label, placeholder, keyboardType, value, onChangeText, secureTe
           style={[styles.inputField, { flex: 1 }]}
           keyboardType={keyboardType}
           value={value}
-          onChangeText={onChangeText}
+          onChangeText={handleChangeText}  // Usar handleChangeText ao invés de onChangeText direto
           secureTextEntry={isSecure}
+          maxLength={maxLength}
         />
 
         {secureTextEntry && (
