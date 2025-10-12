@@ -4,6 +4,7 @@ import { useNavigation } from "@react-navigation/native";
 import { MaterialIcons } from '@expo/vector-icons';
 import Button from '../../../components/Button';
 import Input from "../../../components/Input/";
+import { useAuth } from "../../../contexts/AuthContext";
 import axios from 'axios';
 
 import { styles } from "./styles";
@@ -14,6 +15,7 @@ import Logo from '../../../assets/StartComLogo.png';
 
 const Login = () => {
   const navigation = useNavigation();
+  const { signIn } = useAuth();
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -29,19 +31,37 @@ const Login = () => {
     setLoading(true);
 
     try {
-      const response = await axios.post('http://my-backend.com/login', { email, password });
-      const data = response.data;
-
+      // ========== Test Login (MOCK) ==========
       const dataMock = true;
-
-      // if (data.success) {
+      
       if (dataMock) {
+        // Fake Data for tests
+        const mockUser = {
+          id: 1,
+          name: "Usuário Teste",
+          email: email,
+        };
+        const mockToken = "mocked-jwt-token-12345";
+
+        // Save in context and AsyncStorage
+        await signIn(mockUser, mockToken);
+        
         Alert.alert("Sucesso", "Login realizado!");
-        // console.log("Token do usuário:", data.token);
-        console.log("Token do usuário:", "mocked-jwt-token");
-        navigation.navigate("Dashboard");
+        console.log("Token do usuário:", mockToken);
       } else {
-        Alert.alert("Erro", data.message || "Login falhou");
+        // ========== Real Login ==========
+        const response = await axios.post('http://my-backend.com/login', { 
+          email, 
+          password 
+        });
+        const data = response.data;
+
+        if (data.success) {
+          await signIn(data.user, data.token);
+          Alert.alert("Sucesso", "Login realizado!");
+        } else {
+          Alert.alert("Erro", data.message || "Login falhou");
+        }
       }
     } catch (error) {
       console.error(error);
@@ -54,8 +74,8 @@ const Login = () => {
   return (
     <View style={styles.container}>
       <Image
-      style={styles.logoImage}
-      source={Logo}
+        style={styles.logoImage}
+        source={Logo}
       />
 
       <Text style={styles.title}>Entrar</Text>
@@ -105,7 +125,7 @@ const Login = () => {
           onPress={() => setChecked(!checked)}
           style={styles.checkbox}
         >
-          {checked && <MaterialIcons name="check" size={14} color="globalStyle.primary" />}
+          {checked && <MaterialIcons name="check" size={14} color="#4db8a8" />}
         </TouchableOpacity>
 
         <Text style={styles.keepConnectedText}>Manter-me conectado por 30 dias</Text>
