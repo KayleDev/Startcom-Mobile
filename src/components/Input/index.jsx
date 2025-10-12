@@ -23,7 +23,7 @@ const Input = ({ label, placeholder, keyboardType, value, onChangeText, secureTe
           style={[styles.inputField, { flex: 1 }]}
           keyboardType={keyboardType}
           value={value}
-          onChangeText={handleChangeText}  // Usar handleChangeText ao invés de onChangeText direto
+          onChangeText={handleChangeText}
           secureTextEntry={isSecure}
           maxLength={maxLength}
         />
