@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-import { globalStyle } from "../../../styles/globalStyle.js"
+import { globalStyle } from "../../../styles/globalStyle.js";
 
 export const styles = StyleSheet.create({
   container: {
@@ -10,41 +10,35 @@ export const styles = StyleSheet.create({
     padding: 20,
   },
 
+  logoImage: {
+    width: 128,
+    height: 128,
+  },
+
   title: {
     fontSize: 26,
-    fontWeight: "bold",
-    color: "#333",
-    marginBottom: 24,
+    color: globalStyle.quaternary,
+    fontFamily: globalStyle.fontBold,
   },
 
-  input: {
-    width: "100%",
-    height: 48,
-    backgroundColor: "#f2f2f2",
-    borderRadius: 8,
-    paddingHorizontal: 12,
-    fontSize: 16,
-    marginBottom: 16,
-  },
-
-  button: {
-    width: "100%",
-    height: 48,
-    backgroundColor: "#007bff",
-    borderRadius: 8,
-    justifyContent: "center",
-    alignItems: "center",
-    marginBottom: 16,
-  },
-
-  buttonText: {
-    color: "#fff",
+  subtitle: {
     fontSize: 18,
-    fontWeight: "bold",
+    color: globalStyle.quaternary,
+    marginBottom: 40,
+    fontFamily: globalStyle.fontRegular,
+  },
+
+  inputBlock: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: '100%',
+    gap: 8,
   },
 
   linkText: {
-    color: "#007bff",
+    marginTop: 20,
+    color: globalStyle.tertiary,
     fontSize: 14,
+    fontFamily: globalStyle.fontRegular,
   },
 });
