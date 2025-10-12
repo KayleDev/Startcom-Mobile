@@ -1,7 +1,3 @@
-// ============================================
-// 1. COMPONENTE SIDEBAR
-// components/Sidebar/index.jsx
-// ============================================
 import React from 'react';
 import { View, Text, TouchableOpacity, ScrollView } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
@@ -12,10 +8,10 @@ const Sidebar = ({ isOpen, onClose, navigation, currentRoute }) => {
   const menuItems = [
     { id: 1, name: 'Dashboard', icon: 'dashboard', route: 'Dashboard' },
     { id: 2, name: 'Vendas', icon: 'shopping-cart', route: 'Sales' },
-    { id: 3, name: 'Clientes', icon: 'people', route: 'Clientes' },
-    { id: 4, name: 'Estoque', icon: 'inventory', route: 'Estoque' },
-    { id: 5, name: 'Relatórios', icon: 'assessment', route: 'Relatorios' },
-    { id: 6, name: 'Configurações', icon: 'settings', route: 'Configuracoes' },
+    { id: 3, name: 'Clientes', icon: 'people', route: 'Clients' },
+    { id: 4, name: 'Estoque', icon: 'inventory', route: 'Inventory' },
+    { id: 5, name: 'Relatórios', icon: 'assessment', route: 'Reports' },
+    { id: 6, name: 'Configurações', icon: 'settings', route: 'Settings' },
   ];
 
   const handleNavigate = (route) => {
