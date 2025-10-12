@@ -7,7 +7,6 @@ export const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'space-between',
         backgroundColor: globalStyle.secondary,
-        color: '#333',
         borderRadius: 8,
         paddingHorizontal: 12,
         height: 48,
@@ -15,6 +14,6 @@ export const styles = StyleSheet.create({
 
     dateText: {
         fontSize: 16,
-        color: globalStyle.quinary
+        color: "#777",
     },
 });
