@@ -14,6 +14,7 @@ export const styles = StyleSheet.create({
   labelText: {
     marginBottom: 4,
     fontFamily: globalStyle.fontRegular,
+    color: globalStyle.quaternary,
   },
   inputField: {
     flex: 1,
