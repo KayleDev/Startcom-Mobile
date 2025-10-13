@@ -3,6 +3,7 @@ import React from "react";
 import { View, Text, Dimensions } from "react-native";
 import { BarChart } from "react-native-chart-kit";
 import { styles } from "./styles";
+import { commonUserStyles } from "../../styles/commonUserStyles.js";
 
 const SalesChart = ({ period = '7 dias' }) => {
   const screenWidth = Dimensions.get("window").width;
@@ -91,7 +92,7 @@ const SalesChart = ({ period = '7 dias' }) => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>
+      <Text style={commonUserStyles.sectionTitle}>
         Desempenho de Vendas - {period}
       </Text>
 

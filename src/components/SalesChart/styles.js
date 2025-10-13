@@ -3,14 +3,8 @@ import { globalStyle } from "../../styles/globalStyle";
 
 export const styles = StyleSheet.create({
   container: {
-    alignItems: "center",
     marginTop: 30,
     paddingBottom: 20,
-  },
-  title: {
-    fontSize: 18,
-    fontWeight: "bold",
-    marginBottom: 10,
   },
   chart: {
     borderRadius: 16,
