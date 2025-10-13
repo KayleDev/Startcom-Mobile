@@ -20,10 +20,14 @@ const Inventory = () => {
         title="Clientes"
       />
 
-      <View style={{ flex: 1, padding: 20 }}>
-        <Text style={{ fontSize: 24, fontWeight: 'bold' }}>Estoque</Text>
-        <Text style={{ marginTop: 10, color: '#666' }}>
-          Gerencie seu estoque aqui
+      
+      <View style={commonUserStyles.screenBlock}>
+        <Text style={commonUserStyles.screenTitle}>
+          Estoque
+        </Text>
+
+        <Text style={commonUserStyles.screenDescription}>
+          Controle completo do seu inventário
         </Text>
       </View>
 

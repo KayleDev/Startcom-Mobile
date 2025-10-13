@@ -20,10 +20,13 @@ const Sales = () => {
         title="Vendas"
       />
 
-      <View style={{ flex: 1, padding: 20 }}>
-        <Text style={{ fontSize: 24, fontWeight: 'bold' }}>Vendas</Text>
-        <Text style={{ marginTop: 10, color: '#666' }}>
-          Gerencie suas vendas aqui
+      <View style={commonUserStyles.screenBlock}>
+        <Text style={commonUserStyles.screenTitle}>
+          Vendas
+        </Text>
+            
+        <Text style={commonUserStyles.screenDescription}>
+          Gerencie todas as suas vendas e transações
         </Text>
       </View>
 

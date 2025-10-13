@@ -20,10 +20,13 @@ const Clients = () => {
         title="Clientes"
       />
 
-      <View style={{ flex: 1, padding: 20 }}>
-        <Text style={{ fontSize: 24, fontWeight: 'bold' }}>Clientes</Text>
-        <Text style={{ marginTop: 10, color: '#666' }}>
-          Gerencie seus clientes aqui
+      <View style={commonUserStyles.screenBlock}>
+        <Text style={commonUserStyles.screenTitle}>
+          Clientes
+        </Text>
+      
+        <Text style={commonUserStyles.screenDescription}>
+          Gerencie sua base de clientes e relacionamentos
         </Text>
       </View>
 

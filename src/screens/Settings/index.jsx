@@ -20,10 +20,13 @@ const Settings = () => {
         title="Clientes"
       />
 
-      <View style={{ flex: 1, padding: 20 }}>
-        <Text style={{ fontSize: 24, fontWeight: 'bold' }}>Configurações</Text>
-        <Text style={{ marginTop: 10, color: '#666' }}>
-          Gerencie suas configurações aqui
+      <View style={commonUserStyles.screenBlock}>
+        <Text style={commonUserStyles.screenTitle}>
+          Configurações
+        </Text>
+                  
+        <Text style={commonUserStyles.screenDescription}>
+          Gerencie as preferências da sua conta e notificações
         </Text>
       </View>
 

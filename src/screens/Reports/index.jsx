@@ -20,10 +20,13 @@ const Reports = () => {
         title="Clientes"
       />
 
-      <View style={{ flex: 1, padding: 20 }}>
-        <Text style={{ fontSize: 24, fontWeight: 'bold' }}>Relatório</Text>
-        <Text style={{ marginTop: 10, color: '#666' }}>
-          Gerencie seus relatórios aqui
+      <View style={commonUserStyles.screenBlock}>
+        <Text style={commonUserStyles.screenTitle}>
+          Relatórios
+        </Text>
+      
+        <Text style={commonUserStyles.screenDescription}>
+          Análises e insights do seu negócio
         </Text>
       </View>
 
