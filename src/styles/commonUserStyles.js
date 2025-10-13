@@ -21,5 +21,23 @@ export const commonUserStyles = StyleSheet.create({
         marginTop: 10, 
         color: '#666', 
         fontSize: 16,
-    }
+    },
+    sectionTitleContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginBottom: 10,
+        gap: 8,
+    },
+    sectionTitle: {
+        fontSize: 20,
+        fontWeight: "bold",
+    },
+
+    lineSection: {
+        borderBottomColor: globalStyle.quaternary,
+        borderBottomWidth: StyleSheet.hairlineWidth,
+        flex: 1,
+        height: 1,
+        marginBottom: 20,
+    },
 });

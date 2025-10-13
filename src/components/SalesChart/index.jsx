@@ -92,9 +92,6 @@ const SalesChart = ({ period = '7 dias' }) => {
 
   return (
     <View style={styles.container}>
-      <Text style={commonUserStyles.sectionTitle}>
-        Desempenho de Vendas - {period}
-      </Text>
 
       <BarChart
         data={data}
