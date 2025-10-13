@@ -1,35 +1,39 @@
+// components/PeriodSelector/index.jsx
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, Modal } from 'react-native';
 import { globalStyle } from '../../styles/globalStyle';
-
 import { Calendar } from 'lucide-react-native';
-
 import { styles } from './styles';
 
-const PeriodSelector = () => {
-  const [selectedPeriod, setSelectedPeriod] = useState('7 dias');
+const PeriodSelector = ({ 
+  periods = ['Hoje', '7 dias', '30 dias', '1 ano', 'Período completo'],
+  defaultPeriod = '7 dias',
+  onPeriodChange,
+  buttonStyle,
+  modalStyle
+}) => {
+  const [selectedPeriod, setSelectedPeriod] = useState(defaultPeriod);
   const [isModalVisible, setIsModalVisible] = useState(false);
-
-  const periods = [
-    'Hoje',
-    '7 dias',
-    '30 dias',
-    '1 ano',
-    'Período completo'
-  ];
 
   const handleSelectPeriod = (period) => {
     setSelectedPeriod(period);
     setIsModalVisible(false);
+    
+    // Chama o callback se fornecido
+    if (onPeriodChange) {
+      onPeriodChange(period);
+    }
   };
 
   return (
     <View style={styles.container}>
       <TouchableOpacity
-        style={styles.selectorButton}
+        style={[styles.selectorButton, buttonStyle]}
         onPress={() => setIsModalVisible(true)}
       >
-        <Text style={styles.calendarIcon}><Calendar color={globalStyle.primary}/></Text>
+        <Text style={styles.calendarIcon}>
+          <Calendar color={globalStyle.primary} />
+        </Text>
         <Text style={styles.selectedText}>{selectedPeriod}</Text>
       </TouchableOpacity>
 
@@ -44,7 +48,7 @@ const PeriodSelector = () => {
           activeOpacity={1}
           onPress={() => setIsModalVisible(false)}
         >
-          <View style={styles.modalContent}>
+          <View style={[styles.modalContent, modalStyle]}>
             {periods.map((period, index) => (
               <TouchableOpacity
                 key={index}
