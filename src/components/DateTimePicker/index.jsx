@@ -3,6 +3,7 @@ import { View, Text, TouchableOpacity, Platform } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { styles } from '../Input/styles.js';
 import { styles as datePickerStyles } from './styles.js';
+import { CalendarDays } from 'lucide-react-native';
 
 export default function DatePickerInput({ date, setDate, label }) {
   const [show, setShow] = useState(false);
@@ -23,7 +24,7 @@ export default function DatePickerInput({ date, setDate, label }) {
         <Text style={datePickerStyles.dateText}>
           {date.toLocaleDateString('pt-BR')}
         </Text>
-        <Text style={{ fontSize: 18, color: '#017688' }}>📅</Text>
+        <Text style={{ fontSize: 18 }}><CalendarDays color="#017688" /></Text>
 
         {show && (
           <DateTimePicker

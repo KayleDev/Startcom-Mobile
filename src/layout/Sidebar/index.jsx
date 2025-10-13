@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, ScrollView, Alert } from 'react-native';
-import { MaterialIcons } from '@expo/vector-icons';
+import * as Lucide from "lucide-react-native";
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useAuth } from '../../contexts/AuthContext';
 import { styles } from './styles';
@@ -9,13 +9,14 @@ const Sidebar = ({ isOpen, onClose, navigation, currentRoute }) => {
   const { signOut, user } = useAuth();
 
   const menuItems = [
-    { id: 1, name: 'Dashboard', icon: 'dashboard', route: 'Dashboard' },
-    { id: 2, name: 'Vendas', icon: 'shopping-cart', route: 'Sales' },
-    { id: 3, name: 'Clientes', icon: 'people', route: 'Clients' },
-    { id: 4, name: 'Estoque', icon: 'inventory', route: 'Inventory' },
-    { id: 5, name: 'Relatórios', icon: 'assessment', route: 'Reports' },
-    { id: 6, name: 'Configurações', icon: 'settings', route: 'Settings' },
+    { id: 1, name: 'Dashboard', icon: Lucide.ChartColumn, route: 'Dashboard' },
+    { id: 2, name: 'Vendas', icon: Lucide.ShoppingCart, route: 'Sales' },
+    { id: 3, name: 'Clientes', icon: Lucide.Users, route: 'Clients' },
+    { id: 4, name: 'Estoque', icon: Lucide.Package, route: 'Inventory' },
+    { id: 5, name: 'Relatórios', icon: Lucide.Clipboard, route: 'Reports' },
+    { id: 6, name: 'Configurações', icon: Lucide.Settings, route: 'Settings' },
   ];
+
 
   const handleNavigate = (route) => {
     navigation.navigate(route);
@@ -50,13 +51,12 @@ const Sidebar = ({ isOpen, onClose, navigation, currentRoute }) => {
         onPress={onClose}
       />
 
-      {/* ✅ SafeAreaView agora envolve todo o conteúdo */}
       <SafeAreaView style={styles.sidebarSafeArea} edges={['top', 'bottom', 'left']}>
         <View style={styles.sidebar}>
           <View style={styles.sidebarHeader}>
             <Text style={styles.logoText}>StartCom</Text>
             <TouchableOpacity onPress={onClose} style={styles.closeButton}>
-              <MaterialIcons name="close" size={24} color="#fff" />
+              <Lucide.X size={24} color="#fff" />
             </TouchableOpacity>
           </View>
 
@@ -75,11 +75,8 @@ const Sidebar = ({ isOpen, onClose, navigation, currentRoute }) => {
                   ]}
                   onPress={() => handleNavigate(item.route)}
                 >
-                  <MaterialIcons 
-                    name={item.icon} 
-                    size={20} 
-                    color="#fff"
-                  />
+                  <item.icon size={20} color="#fff" />
+                  
                   <Text style={[
                     styles.menuText,
                     currentRoute === item.route && styles.menuTextActive
@@ -113,7 +110,7 @@ const Sidebar = ({ isOpen, onClose, navigation, currentRoute }) => {
                 style={styles.logoutButton}
                 onPress={handleLogout}
               >
-                <MaterialIcons name="logout" size={20} color="#fff" />
+                <Lucide.LogOut size={20} color="#fff" />
                 <Text style={styles.logoutText}>Sair</Text>
               </TouchableOpacity>
             </View>

@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, Modal } from 'react-native';
+import { globalStyle } from '../../styles/globalStyle';
+
+import { Calendar } from 'lucide-react-native';
 
 import { styles } from './styles';
 
@@ -26,7 +29,7 @@ const PeriodSelector = () => {
         style={styles.selectorButton}
         onPress={() => setIsModalVisible(true)}
       >
-        <Text style={styles.calendarIcon}>📅</Text>
+        <Text style={styles.calendarIcon}><Calendar color={globalStyle.primary}/></Text>
         <Text style={styles.selectedText}>{selectedPeriod}</Text>
       </TouchableOpacity>
 
