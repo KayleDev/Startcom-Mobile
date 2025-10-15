@@ -13,7 +13,7 @@ import Input from '../../components/Input';
 import PeriodSelector from '../../components/PeriodSelector';
 import StatusFilter from '../../components/StatusFilter';
 
-import { Plus, DollarSign, ShoppingCart, TrendingUp} from 'lucide-react-native';
+import { Plus, DollarSign, ShoppingCart, TrendingUp, Funnel} from 'lucide-react-native';
 import { globalStyle } from '../../styles/globalStyle.js';
 import SalesInfo from '../../components/SalesInfo/index.jsx';
 
@@ -167,6 +167,8 @@ const Sales = () => {
             />
 
             <StatusFilter
+              icon={<Funnel color={globalStyle.primary}/>}
+              title="Filtros"
               filters={[
                 { id: 1, label: 'Concluída' },
                 { id: 2, label: 'Pendente' },
