@@ -40,14 +40,4 @@ export const styles = StyleSheet.create({
         width: '100%',
         gap: 8,
     },
-
-    alignButtonText: {
-        flexDirection: "row",
-        gap: 10,
-    },
-
-    saveText: {
-        fontSize: 16,
-        color: "#FFFFFF",
-    },
 })

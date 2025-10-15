@@ -40,4 +40,14 @@ export const commonUserStyles = StyleSheet.create({
         height: 1,
         marginBottom: 20,
     },
+
+    alignButtonText: {
+        flexDirection: "row",
+        gap: 10,
+    },
+
+    saveText: {
+        fontSize: 16,
+        color: "#FFFFFF",
+    },
 });
