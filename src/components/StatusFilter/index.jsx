@@ -2,10 +2,11 @@ import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, Modal } from 'react-native';
 import { styles } from './styles';
 
-import { Funnel } from 'lucide-react-native';
 import { globalStyle } from '../../styles/globalStyle';
 
 const FilterSelector = ({ 
+  icon,
+  title,
   filters,
   defaultSelected,
   onFilterChange,
@@ -38,8 +39,8 @@ const FilterSelector = ({
         style={[styles.filterButton, buttonStyle]}
         onPress={() => setIsModalVisible(true)}
       >
-        <Text style={styles.filterIcon}><Funnel color={globalStyle.primary}/></Text>
-        <Text style={styles.buttonText}>Filtros</Text>
+        <Text style={styles.filterIcon}>{icon}</Text>
+        <Text style={styles.buttonText}>{title}</Text>
       </TouchableOpacity>
 
       <Modal
