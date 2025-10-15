@@ -5,6 +5,7 @@ export const styles = StyleSheet.create({
   container: {
     marginTop: 30,
     paddingBottom: 20,
+    backgroundColor: '#FFFFFF',
   },
   chart: {
     borderRadius: 16,

@@ -141,8 +141,6 @@ const Dashboard = () => {
           />
         </View>
 
-        <View style={commonUserStyles.lineSection}></View>
-
         {/* Sales Chart Section */}
         <View style={styles.salesChartContainer}>
           <View style={commonUserStyles.sectionTitleContainer}>
@@ -152,8 +150,6 @@ const Dashboard = () => {
 
           <SalesChart period={selectedPeriod} />
         </View>
-
-        <View style={commonUserStyles.lineSection}></View>
 
         {/* Quick Actions Section */}
         <View style={styles.quickActionsContainer}>
@@ -193,8 +189,6 @@ const Dashboard = () => {
             iconBgColor={globalStyle.primary}
           />
         </View>
-
-        <View style={commonUserStyles.lineSection}></View>
         
         <View style={styles.activitiesContainer}>
           <View style={commonUserStyles.sectionTitleContainer}>
@@ -239,8 +233,6 @@ const Dashboard = () => {
             title="Relatório mensal de vendas gerado"
           />
         </View>
-
-        <View style={commonUserStyles.lineSection}></View>
               
         <View style={styles.highlightCardsContainer}>
           <View style={commonUserStyles.sectionTitleContainer}>

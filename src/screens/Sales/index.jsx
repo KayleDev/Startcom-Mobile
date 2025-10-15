@@ -93,7 +93,7 @@ const Sales = () => {
             <PeriodSelector
               periods={["Hoje", "Esta Semana", "Este Mês", "Este Ano"]}
               defaultPeriod="Este Mês"
-              containerStyle={{width: "49%"}}
+              containerStyle={{width: "49%", marginVertical: 0}}
             />
 
             <StatusFilter
@@ -106,7 +106,7 @@ const Sales = () => {
         </View>
 
         <SalesInfo/>
-        
+
       </ScrollView>
 
       <Sidebar

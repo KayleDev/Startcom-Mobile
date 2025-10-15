@@ -65,9 +65,9 @@ const SalesChart = ({ period = '7 dias' }) => {
       case '30 dias':
         return 0.8;
       case '1 ano':
-        return 0.3;
+        return 0.1;
       case 'Período completo':
-        return 0.65;
+        return 0.5;
       default:
         return 0.4;
     }
@@ -95,7 +95,7 @@ const SalesChart = ({ period = '7 dias' }) => {
 
       <BarChart
         data={data}
-        width={screenWidth - 48}
+        width={screenWidth - 80}
         height={300}
         fromZero
         withInnerLines
