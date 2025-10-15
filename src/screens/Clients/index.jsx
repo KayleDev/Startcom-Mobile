@@ -140,7 +140,7 @@ const Clients = () => {
 
         <View style={commonUserStyles.filterContainer}>
           <Input
-            placeholder="Buscar cliente, e-mail ou cidade..."
+            placeholder="Buscar nome, e-mail ou telefone..."
             styleInput={commonUserStyles.inputVariant}
             onChangeText={setSearch}
             value={search}
