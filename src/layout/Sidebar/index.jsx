@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { View, Text, TouchableOpacity, ScrollView, Alert, StatusBar, Platform, Animated } from 'react-native';
-import * as Lucide from "lucide-react-native";
+import {ChartColumn, ShoppingCart, Users, Package, Clipboard, Settings, X, LogOut} from "lucide-react-native";
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useAuth } from '../../contexts/AuthContext';
 import { styles } from './styles';
@@ -13,12 +13,12 @@ const Sidebar = ({ isOpen, onClose, navigation, currentRoute }) => {
   const fadeAnim = useRef(new Animated.Value(0)).current;
 
   const menuItems = [
-    { id: 1, name: 'Dashboard', icon: Lucide.ChartColumn, route: 'Dashboard' },
-    { id: 2, name: 'Vendas', icon: Lucide.ShoppingCart, route: 'Sales' },
-    { id: 3, name: 'Clientes', icon: Lucide.Users, route: 'Clients' },
-    { id: 4, name: 'Estoque', icon: Lucide.Package, route: 'Inventory' },
-    { id: 5, name: 'Relatórios', icon: Lucide.Clipboard, route: 'Reports' },
-    { id: 6, name: 'Configurações', icon: Lucide.Settings, route: 'Settings' },
+    { id: 1, name: 'Dashboard', icon: ChartColumn, route: 'Dashboard' },
+    { id: 2, name: 'Vendas', icon: ShoppingCart, route: 'Sales' },
+    { id: 3, name: 'Clientes', icon: Users, route: 'Clients' },
+    { id: 4, name: 'Estoque', icon: Package, route: 'Inventory' },
+    { id: 5, name: 'Relatórios', icon: Clipboard, route: 'Reports' },
+    { id: 6, name: 'Configurações', icon: Settings, route: 'Settings' },
   ];
 
   useEffect(() => {
@@ -115,7 +115,7 @@ const Sidebar = ({ isOpen, onClose, navigation, currentRoute }) => {
           <View style={[styles.sidebarHeader, { paddingTop: insets.top + 20 }]}>
             <Text style={styles.logoText}>StartCom</Text>
             <TouchableOpacity onPress={onClose} style={styles.closeButton}>
-              <Lucide.X size={24} color="#fff" />
+              <X size={24} color="#fff" />
             </TouchableOpacity>
           </View>
 
@@ -170,7 +170,7 @@ const Sidebar = ({ isOpen, onClose, navigation, currentRoute }) => {
                 style={styles.logoutButton}
                 onPress={handleLogout}
               >
-                <Lucide.LogOut size={20} color="#fff" />
+                <LogOut size={20} color="#fff" />
                 <Text style={styles.logoutText}>Sair</Text>
               </TouchableOpacity>
             </View>
