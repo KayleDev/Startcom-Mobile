@@ -6,11 +6,7 @@ import { Funnel } from 'lucide-react-native';
 import { globalStyle } from '../../styles/globalStyle';
 
 const FilterSelector = ({ 
-  filters = [
-    { id: 1, label: 'Concluída' },
-    { id: 2, label: 'Pendente' },
-    { id: 3, label: 'Cancelada' },
-  ],
+  filters,
   defaultSelected,
   onFilterChange,
   buttonStyle,

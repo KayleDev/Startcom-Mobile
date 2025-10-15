@@ -24,7 +24,7 @@ const Sales = () => {
 
   const [search, setSearch] = useState("");
   const [selectedPeriod, setSelectedPeriod] = useState("Este Mês");
-  const [selectedStatuses, setSelectedStatuses] = useState([]);
+  const [selectedStatuses, setSelectedStatuses] = useState(['Concluída', 'Pendente', 'Cancelada']);
 
   const allOrders = [
     { id: '#001', client: 'Maria Silva', date: '2025-10-15', value: 'R$ 256,80', status: 'Concluída', items: '3 itens' },
@@ -74,6 +74,8 @@ const Sales = () => {
       filtered = filtered.filter(order => 
         selectedStatuses.includes(order.status)
       );
+    } else {
+      return [];
     }
 
     if (search.trim()) {
