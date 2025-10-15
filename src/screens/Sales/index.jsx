@@ -180,7 +180,7 @@ const Sales = () => {
           </View>
         </View>
 
-        <Text style={styles.resultCount}>
+        <Text style={commonUserStyles.resultCount}>
           {filteredOrders.length} {filteredOrders.length === 1 ? 'venda encontrada' : 'vendas encontradas'}
         </Text>
 
