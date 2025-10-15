@@ -1,0 +1,85 @@
+import { StyleSheet } from "react-native";
+import { globalStyle } from "../../styles/globalStyle";
+
+export const styles = StyleSheet.create({
+    filterButton: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        backgroundColor: '#FFFFFF',
+        paddingVertical: 12,
+        paddingHorizontal: 16,
+        borderRadius: 8,
+        borderWidth: 1,
+        borderColor: '#E0E0E0',
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 1 },
+        shadowOpacity: 0.1,
+        shadowRadius: 2,
+        elevation: 2,
+    },
+    filterIcon: {
+        fontSize: 18,
+        marginRight: 8,
+        color: '#374151',
+    },
+    buttonText: {
+        fontSize: 16,
+        color: '#333333',
+        fontWeight: '500',
+    },
+    modalOverlay: {
+        flex: 1,
+        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    modalContent: {
+        backgroundColor: '#FFFFFF',
+        borderRadius: 12,
+        paddingVertical: 20,
+        paddingHorizontal: 20,
+        width: '90%',
+        maxWidth: 400,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.3,
+        shadowRadius: 8,
+        elevation: 8,
+    },
+    modalTitle: {
+        fontSize: 18,
+        fontWeight: '600',
+        color: '#333333',
+        marginBottom: 20,
+    },
+    filterOption: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        paddingVertical: 14,
+        paddingHorizontal: 8,
+    },
+    checkbox: {
+        width: 24,
+        height: 24,
+        borderRadius: 6,
+        borderWidth: 2,
+        borderColor: '#D1D5DB',
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginRight: 12,
+        backgroundColor: '#FFFFFF',
+    },
+    checkboxSelected: {
+        backgroundColor: globalStyle.primary,
+        borderColor:    globalStyle.primary,
+    },
+    checkmark: {
+        fontSize: 16,
+        color: '#FFFFFF',
+        fontWeight: 'bold',
+    },
+    filterText: {
+        fontSize: 16,
+        color: '#374151',
+    },
+});
