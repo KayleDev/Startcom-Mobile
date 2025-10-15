@@ -148,15 +148,15 @@ const Sales = () => {
           />
         </View>
 
-        <View style={styles.filterContainer}>
+        <View style={commonUserStyles.filterContainer}>
           <Input 
             placeholder="Buscar Vendas por cliente, ID..." 
-            styleInput={styles.inputVariant}
+            styleInput={commonUserStyles.inputVariant}
             onChangeText={setSearch}
             value={search}
           />
 
-          <View style={styles.filters}>
+          <View style={commonUserStyles.filters}>
             <PeriodSelector
               periods={["Hoje", "Esta Semana", "Este Mês", "Este Ano"]}
               defaultPeriod="Este Mês"
