@@ -119,9 +119,9 @@ const Settings = () => {
           
           <Button
             title={
-              <View style={styles.alignButtonText}>
+              <View style={commonUserStyles.alignButtonText}>
                 <Save size={20} color="#FFFFFF" />
-                <Text style={styles.saveText}>Salvar Alterações</Text>
+                <Text style={commonUserStyles.saveText}>Salvar Alterações</Text>
               </View>
             }
             onPress={handleChanges}
