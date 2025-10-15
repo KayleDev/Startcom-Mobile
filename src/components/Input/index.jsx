@@ -3,7 +3,7 @@ import { View, TextInput, Text, TouchableOpacity } from "react-native";
 import { MaterialIcons } from '@expo/vector-icons';
 import { styles } from "./styles.js";
 
-const Input = ({ label, placeholder, keyboardType, value, onChangeText, secureTextEntry = false, formatPHONE, style, maxLength }) => {
+const Input = ({ label, placeholder, keyboardType, value, onChangeText, secureTextEntry = false, formatPHONE, style, maxLength, styleInput }) => {
   const [isSecure, setIsSecure] = useState(secureTextEntry);
 
   const handleChangeText = (text) => {
@@ -15,7 +15,7 @@ const Input = ({ label, placeholder, keyboardType, value, onChangeText, secureTe
     <View style={[{ marginBottom: 16 }, style]}>
       {label && <Text style={styles.labelText}>{label}</Text>}
 
-      <View style={styles.inputContainer}>
+      <View style={[styles.inputContainer, styleInput]}>
         <TextInput
           key={isSecure ? "secure" : "text"}
           placeholder={placeholder}
