@@ -7,7 +7,7 @@ const ProductCard = ({title, value, icon, color, extra}) => {
   return (
     <View style={styles.card}>
         <View style={styles.group}>
-            <View style={styles.information}>
+            <View>
                 <Text style={styles.title}>{title}</Text>
                 <Text style={styles.value}>{value}</Text>
             </View>
