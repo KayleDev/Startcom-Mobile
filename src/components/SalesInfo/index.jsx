@@ -5,12 +5,7 @@ import { styles } from './styles';
 import { globalStyle } from '../../styles/globalStyle';
 
 const SalesInfo = ({ 
-  orders = [
-    { id: '#001', client: 'Maria Silva', date: '21/09/2025', value: 'R$ 256,8', status: 'Concluída', items: '3 itens' },
-    { id: '#002', client: 'João Santos', date: '20/09/2025', value: 'R$ 189,5', status: 'Pendente', items: '2 itens' },
-    { id: '#003', client: 'Ana Costa', date: '15/09/2025', value: 'R$ 445,29', status: 'Concluída', items: '5 itens' },
-    { id: '#004', client: 'Carlos Souza', date: '05/08/2025', value: 'R$ 89,99', status: 'Cancelada', items: '1 itens' },
-  ],
+  orders = [],
   onViewOrder
 }) => {
   
@@ -25,6 +20,11 @@ const SalesInfo = ({
       default:
         return styles.statusDefault;
     }
+  };
+
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString('pt-BR');
   };
 
   const renderOrderCard = ({ item }) => (
@@ -47,7 +47,7 @@ const SalesInfo = ({
 
         <View style={styles.infoRow}>
           <Text style={styles.label}>Data</Text>
-          <Text style={styles.value}>{item.date}</Text>
+          <Text style={styles.value}>{formatDate(item.date)}</Text>
         </View>
 
         <View style={styles.infoRow}>
@@ -69,15 +69,23 @@ const SalesInfo = ({
     </View>
   );
 
+  const renderEmptyList = () => (
+    <View style={{ padding: 20, alignItems: 'center' }}>
+      <Text style={{ fontSize: 16, color: '#999', textAlign: 'center' }}>
+        Nenhuma venda encontrada com os filtros selecionados.
+      </Text>
+    </View>
+  );
+
   return (
     <View style={styles.container}>
       <FlatList
         data={orders}
         renderItem={renderOrderCard}
         keyExtractor={(item) => item.id}
-        contentContainerStyle={styles.listContainer}
         showsVerticalScrollIndicator={false}
         scrollEnabled={false}
+        ListEmptyComponent={renderEmptyList}
       />
     </View>
   );

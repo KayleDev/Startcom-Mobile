@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { View, ScrollView, Text } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -22,11 +22,79 @@ const Sales = () => {
   const navigation = useNavigation();
   const route = useRoute();
 
-  const [search, setSearch] = useState("")
+  const [search, setSearch] = useState("");
+  const [selectedPeriod, setSelectedPeriod] = useState("Este Mês");
+  const [selectedStatuses, setSelectedStatuses] = useState([]);
+
+  const allOrders = [
+    { id: '#001', client: 'Maria Silva', date: '2025-10-15', value: 'R$ 256,80', status: 'Concluída', items: '3 itens' },
+    { id: '#002', client: 'João Santos', date: '2025-10-14', value: 'R$ 189,50', status: 'Pendente', items: '2 itens' },
+    { id: '#003', client: 'Ana Costa', date: '2025-10-10', value: 'R$ 445,29', status: 'Concluída', items: '5 itens' },
+    { id: '#004', client: 'Carlos Souza', date: '2025-09-05', value: 'R$ 89,99', status: 'Cancelada', items: '1 item' },
+    { id: '#005', client: 'Pedro Alves', date: '2025-10-13', value: 'R$ 320,00', status: 'Concluída', items: '4 itens' },
+    { id: '#006', client: 'Juliana Martins', date: '2025-10-12', value: 'R$ 150,00', status: 'Pendente', items: '2 itens' },
+    { id: '#007', client: 'Roberto Lima', date: '2025-08-20', value: 'R$ 75,50', status: 'Cancelada', items: '1 item' },
+    { id: '#008', client: 'Fernanda Rocha', date: '2025-10-11', value: 'R$ 520,00', status: 'Concluída', items: '6 itens' },
+  ];
+
+  const filterByPeriod = (orders, period) => {
+    const today = new Date();
+    
+    return orders.filter(order => {
+      const orderDate = new Date(order.date);
+      
+      switch(period) {
+        case 'Hoje':
+          return orderDate.toDateString() === today.toDateString();
+        
+        case 'Esta Semana':
+          const weekAgo = new Date(today);
+          weekAgo.setDate(today.getDate() - 7);
+          return orderDate >= weekAgo && orderDate <= today;
+        
+        case 'Este Mês':
+          return orderDate.getMonth() === today.getMonth() && 
+                 orderDate.getFullYear() === today.getFullYear();
+        
+        case 'Este Ano':
+          return orderDate.getFullYear() === today.getFullYear();
+        
+        default:
+          return true;
+      }
+    });
+  };
+
+  const filteredOrders = useMemo(() => {
+    let filtered = [...allOrders];
+
+    filtered = filterByPeriod(filtered, selectedPeriod);
+
+    if (selectedStatuses.length > 0) {
+      filtered = filtered.filter(order => 
+        selectedStatuses.includes(order.status)
+      );
+    }
+
+    if (search.trim()) {
+      const searchLower = search.toLowerCase().trim();
+      filtered = filtered.filter(order => 
+        order.client.toLowerCase().includes(searchLower) ||
+        order.id.toLowerCase().includes(searchLower) ||
+        order.value.toLocaleLowerCase().includes(searchLower)
+      );
+    }
+
+    return filtered;
+  }, [search, selectedPeriod, selectedStatuses]);
 
   const handleSale = () => {
-    console.log("ABCDEFGHIJKLMNOPQRSTUVWXYZ")
-  }
+    console.log("Nova venda");
+  };
+
+  const handleViewOrder = (order) => {
+    console.log("Ver pedido:", order);
+  };
 
   return (
     <SafeAreaView style={commonUserStyles.safeArea}>
@@ -53,7 +121,6 @@ const Sales = () => {
           }
           onPress={handleSale}
         />
-
 
         <View style={styles.salesContainer}>
           <SalesCard 
@@ -94,18 +161,29 @@ const Sales = () => {
               periods={["Hoje", "Esta Semana", "Este Mês", "Este Ano"]}
               defaultPeriod="Este Mês"
               containerStyle={{width: "49%", marginVertical: 0}}
+              onPeriodChange={setSelectedPeriod}
             />
 
             <StatusFilter
-              onFilterChange={(selectedFilters) => {
-                console.log('Filtros selecionados:', selectedFilters);
-              }}
+              filters={[
+                { id: 1, label: 'Concluída' },
+                { id: 2, label: 'Pendente' },
+                { id: 3, label: 'Cancelada' },
+              ]}
+              onFilterChange={setSelectedStatuses}
               containerStyle={{width: "49%"}}
             />
           </View>
         </View>
 
-        <SalesInfo/>
+        <Text style={styles.resultCount}>
+          {filteredOrders.length} {filteredOrders.length === 1 ? 'venda encontrada' : 'vendas encontradas'}
+        </Text>
+
+        <SalesInfo 
+          orders={filteredOrders}
+          onViewOrder={handleViewOrder}
+        />
 
       </ScrollView>
 

@@ -9,9 +9,8 @@ const Sidebar = ({ isOpen, onClose, navigation, currentRoute }) => {
   const { signOut, user } = useAuth();
   const insets = useSafeAreaInsets();
   
-  // Animações
-  const slideAnim = useRef(new Animated.Value(-300)).current; // Começa fora da tela
-  const fadeAnim = useRef(new Animated.Value(0)).current; // Opacity do overlay
+  const slideAnim = useRef(new Animated.Value(-300)).current;
+  const fadeAnim = useRef(new Animated.Value(0)).current;
 
   const menuItems = [
     { id: 1, name: 'Dashboard', icon: Lucide.ChartColumn, route: 'Dashboard' },
