@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text } from 'react-native';
+import { View, ScrollView, Text } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Header from '../../layout/Header';
@@ -20,7 +20,7 @@ const Reports = () => {
         title="Clientes"
       />
 
-      <View style={commonUserStyles.screenBlock}>
+      <ScrollView style={commonUserStyles.screenBlock}>
         <Text style={commonUserStyles.screenTitle}>
           Relatórios
         </Text>
@@ -28,7 +28,7 @@ const Reports = () => {
         <Text style={commonUserStyles.screenDescription}>
           Análises e insights do seu negócio
         </Text>
-      </View>
+      </ScrollView>
 
       <Sidebar
         isOpen={isSidebarOpen}

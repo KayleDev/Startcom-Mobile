@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text } from 'react-native';
+import { View, ScrollView, Text } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Header from '../../layout/Header';
@@ -19,9 +19,8 @@ const Inventory = () => {
         onMenuPress={() => setIsSidebarOpen(true)}
         title="Clientes"
       />
-
       
-      <View style={commonUserStyles.screenBlock}>
+      <ScrollView style={commonUserStyles.screenBlock}>
         <Text style={commonUserStyles.screenTitle}>
           Estoque
         </Text>
@@ -29,7 +28,9 @@ const Inventory = () => {
         <Text style={commonUserStyles.screenDescription}>
           Controle completo do seu inventário
         </Text>
-      </View>
+
+        
+      </ScrollView>
 
       <Sidebar
         isOpen={isSidebarOpen}
