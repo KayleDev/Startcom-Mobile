@@ -10,7 +10,8 @@ const PeriodSelector = ({
   defaultPeriod = '7 dias',
   onPeriodChange,
   buttonStyle,
-  modalStyle
+  containerStyle,
+  modalStyle,
 }) => {
   const [selectedPeriod, setSelectedPeriod] = useState(defaultPeriod);
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -26,7 +27,7 @@ const PeriodSelector = ({
   };
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, containerStyle]}>
       <TouchableOpacity
         style={[styles.selectorButton, buttonStyle]}
         onPress={() => setIsModalVisible(true)}
