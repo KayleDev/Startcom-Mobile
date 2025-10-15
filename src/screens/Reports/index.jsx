@@ -8,11 +8,12 @@ import PeriodSelector from '../../components/PeriodSelector';
 import Button from '../../components/Button';
 import ReportCard from '../../components/ReportCard';
 
-import { Plus, DollarSign, TrendingUp, Users, Package } from 'lucide-react-native';
+import { Plus, DollarSign, TrendingUp, ChartLine, Users, Package } from 'lucide-react-native';
 
 import { styles } from './styles';
 import { commonUserStyles } from '../../styles/commonUserStyles.js';
 import { globalStyle } from '../../styles/globalStyle.js';
+import BezierLineChart from '../../components/BezierLineChart/index.jsx';
 
 const Reports = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -20,6 +21,11 @@ const Reports = () => {
   const route = useRoute();
 
   const [selectedPeriod, setSelectedPeriod] = useState("Últimos 6 meses");
+
+  const handlePeriodChange = (period) => {
+    setSelectedPeriod(period);
+    console.log('Período selecionado:', period);
+  };
 
   const handleReport = () => {
 
@@ -53,7 +59,7 @@ const Reports = () => {
         <PeriodSelector
           periods={["Últimos 7 dias", "Últimos 30 dias", "Últimos 6 meses", "Último 1 ano"]}
           defaultPeriod="Últimos 6 meses"
-          onPeriodChange={setSelectedPeriod}
+          onPeriodChange={handlePeriodChange}
           containerStyle={{ marginVertical: 0 }}
         />
 
@@ -89,6 +95,15 @@ const Reports = () => {
             title="Ticket médio"
             description="+5% vs mês anterior"
           />
+        </View>
+
+        <View style={styles.reportChartContainer}>
+          <View style={commonUserStyles.sectionTitleContainer}>
+            <ChartLine size={24} color={globalStyle.primary} />
+            <Text style={commonUserStyles.sectionTitle}>Evolução das Vendas</Text>
+          </View>
+        
+          <BezierLineChart period={selectedPeriod} />
         </View>
       </ScrollView>
 

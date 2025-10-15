@@ -1,4 +1,3 @@
-// components/SalesChart/index.jsx
 import React from "react";
 import { View, Text, Dimensions } from "react-native";
 import { BarChart } from "react-native-chart-kit";
