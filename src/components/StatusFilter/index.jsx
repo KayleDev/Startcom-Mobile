@@ -7,17 +7,18 @@ import { globalStyle } from '../../styles/globalStyle';
 
 const FilterSelector = ({ 
   filters = [
-    { id: 1, label: 'Concluído' },
+    { id: 1, label: 'Concluída' },
     { id: 2, label: 'Pendente' },
     { id: 3, label: 'Cancelada' },
   ],
-  defaultSelected = ['Concluído', 'Pendente'],
+  defaultSelected,
   onFilterChange,
   buttonStyle,
   containerStyle,
   modalStyle
 }) => {
-  const [selectedFilters, setSelectedFilters] = useState(defaultSelected);
+  const initialSelected = defaultSelected || filters.map(f => f.label);
+  const [selectedFilters, setSelectedFilters] = useState(initialSelected);
   const [isModalVisible, setIsModalVisible] = useState(false);
 
   const toggleFilter = (label) => {

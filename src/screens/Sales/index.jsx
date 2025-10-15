@@ -28,7 +28,7 @@ const Sales = () => {
 
   const allOrders = [
     { id: '#001', client: 'Maria Silva', date: '2025-10-15', value: 'R$ 256,80', status: 'Concluída', items: '3 itens' },
-    { id: '#002', client: 'João Santos', date: '2025-10-14', value: 'R$ 189,50', status: 'Pendente', items: '2 itens' },
+    { id: '#002', client: 'João Santos', date: '2025-10-14', value: 'R$ 189,50', status: 'Cancelada', items: '2 itens' },
     { id: '#003', client: 'Ana Costa', date: '2025-10-10', value: 'R$ 445,29', status: 'Concluída', items: '5 itens' },
     { id: '#004', client: 'Carlos Souza', date: '2025-09-05', value: 'R$ 89,99', status: 'Cancelada', items: '1 item' },
     { id: '#005', client: 'Pedro Alves', date: '2025-10-13', value: 'R$ 320,00', status: 'Concluída', items: '4 itens' },
