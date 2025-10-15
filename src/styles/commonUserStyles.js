@@ -9,7 +9,7 @@ export const commonUserStyles = StyleSheet.create({
 
     screenBlock: {
         flex: 1, 
-        padding: 24,
+        padding: 18,
     },
     
     screenTitle: {
