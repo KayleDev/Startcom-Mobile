@@ -8,12 +8,13 @@ import PeriodSelector from '../../components/PeriodSelector';
 import Button from '../../components/Button';
 import ReportCard from '../../components/ReportCard';
 
-import { Plus, DollarSign, TrendingUp, ChartLine, Users, Package } from 'lucide-react-native';
+import { Plus, DollarSign, TrendingUp, Users, Package, ChartLine, ChartPie } from 'lucide-react-native';
 
 import { styles } from './styles';
 import { commonUserStyles } from '../../styles/commonUserStyles.js';
 import { globalStyle } from '../../styles/globalStyle.js';
-import BezierLineChart from '../../components/BezierLineChart/index.jsx';
+import BezierLineChart from '../../components/BezierLineChart';
+import CategoryPieChart from '../../components/categoryPieChart';
 
 const Reports = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -104,6 +105,15 @@ const Reports = () => {
           </View>
         
           <BezierLineChart period={selectedPeriod} />
+        </View>
+        
+        <View style={styles.reportChartContainer}>
+          <View style={commonUserStyles.sectionTitleContainer}>
+            <ChartPie size={24} color={globalStyle.primary} />
+            <Text style={commonUserStyles.sectionTitle}>Categorias de Vendas</Text>
+          </View>
+        
+          <CategoryPieChart period={selectedPeriod} />
         </View>
       </ScrollView>
 
