@@ -10,7 +10,7 @@ export const styles = StyleSheet.create({
     left: 0,
     right: 0,
     bottom: 0,
-    zIndex: 1000,
+    zIndex: 999,
   },
   overlayBackground: {
     position: 'absolute',
@@ -20,16 +20,13 @@ export const styles = StyleSheet.create({
     bottom: 0,
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
   },
-  sidebarSafeArea: {
+  sidebar: {
     position: 'absolute',
     left: 0,
     top: 0,
     bottom: 0,
-    width: width * 0.7,
-    maxWidth: 300,
-  },
-  sidebar: {
-    flex: 1,
+    width: width * 0.82,
+    maxWidth: 330,
     backgroundColor: '#1a1a1a',
     shadowColor: '#000',
     shadowOffset: { width: 2, height: 0 },
@@ -42,8 +39,7 @@ export const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingHorizontal: 20,
-    paddingVertical: 20,
-    backgroundColor: '#000',
+    paddingBottom: 20,
   },
   logoText: {
     fontSize: 20,
@@ -82,7 +78,6 @@ export const styles = StyleSheet.create({
   
   logoutSection: {
     paddingHorizontal: 12,
-    paddingBottom: 12,
     paddingTop: 20,
     borderTopWidth: 1,
     borderTopColor: '#333',
