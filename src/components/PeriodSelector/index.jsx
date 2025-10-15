@@ -20,7 +20,6 @@ const PeriodSelector = ({
     setSelectedPeriod(period);
     setIsModalVisible(false);
     
-    // Chama o callback se fornecido
     if (onPeriodChange) {
       onPeriodChange(period);
     }

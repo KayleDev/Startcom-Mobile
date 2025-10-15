@@ -33,14 +33,6 @@ export const commonUserStyles = StyleSheet.create({
         fontWeight: "bold",
     },
 
-    lineSection: {
-        borderBottomColor: globalStyle.quaternary,
-        borderBottomWidth: StyleSheet.hairlineWidth,
-        flex: 1,
-        height: 1,
-        marginBottom: 20,
-    },
-
     alignButtonText: {
         flexDirection: "row",
         gap: 10,
