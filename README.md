@@ -1,5 +1,5 @@
 # The CLI development environment was switched to Expo, so this way of running the project is currently NOT FUNCTIONAL.
-**The updated version will be available on 10/20/2025.**
+**The updated version will be available on 20/10/2025.**
 
 
 # 📱 StartCom Mobile
