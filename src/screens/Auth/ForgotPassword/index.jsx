@@ -18,7 +18,7 @@ const ForgotPassword = () => {
             return;
         }
         
-        navigation.navigate('Login')
+        navigation.navigate('ForgotPasswordCode')
     }
 
     return (
