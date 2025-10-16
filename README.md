@@ -1,3 +1,7 @@
+# The CLI development environment was switched to Expo, so this way of running the project is currently NOT FUNCTIONAL.
+**The updated version will be available on 10/20/2025.**
+
+
 # 📱 StartCom Mobile
 
 **StartCom Mobile** is the mobile application for the **StartCom** project (TCC), developed with **React Native**.  
@@ -24,7 +28,7 @@ It complements the web platform, offering an optimized experience for mobile dev
 1. **Clone this repository**
 
 ```bash
-git clone https://github.com/your-username/startcom-mobile.git
+git clone https://github.com/KayleDev/Startcom-Mobile.git
 cd startcom-mobile
 ```
 
