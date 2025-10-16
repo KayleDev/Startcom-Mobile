@@ -56,6 +56,7 @@ export default function CPFCNPJToggle({ value, onChangeText, formatCPF, formatCN
         <TextInput
           placeholder={selectedType === 'CPF' ? '000.000.000-00' : '00.000.000/0000-00'}
           style={styles.inputField}
+          placeholderTextColor={111}
           keyboardType="numeric"
           value={value}
           onChangeText={handleChangeText}

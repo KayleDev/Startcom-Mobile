@@ -19,6 +19,7 @@ export const styles = StyleSheet.create({
   inputField: {
     flex: 1,
     fontSize: 16,
+    color: '#000000'
   },
   eyeButton: {
     marginLeft: 8,
