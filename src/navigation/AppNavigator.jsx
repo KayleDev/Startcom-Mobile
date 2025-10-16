@@ -7,6 +7,7 @@ import { useAuth } from "../contexts/AuthContext";
 import Login from "../screens/Auth/Login/";
 import Register from "../screens/Auth/Register/";
 import ForgotPassword from "../screens/Auth/ForgotPassword";
+import ForgotPasswordCode from "../screens/Auth/ForgotPasswordCode";
 
 import Dashboard from "../screens/Dashboard/";
 import Sales from "../screens/Sales/";
@@ -47,6 +48,7 @@ export default function AppNavigator() {
             <Stack.Screen name="Login" component={Login} />
             <Stack.Screen name="Register" component={Register} />
             <Stack.Screen name="ForgotPassword" component={ForgotPassword}/>
+            <Stack.Screen name="ForgotPasswordCode" component={ForgotPasswordCode}/>
           </>
         )}
       </Stack.Navigator>
