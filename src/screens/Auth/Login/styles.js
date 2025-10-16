@@ -102,4 +102,8 @@ export const styles = StyleSheet.create({
     fontSize: 14,
     fontFamily: globalStyle.fontRegular,
   },
+
+  linkTextFinal: {
+    alignSelf: 'flex-end'
+  }
 });

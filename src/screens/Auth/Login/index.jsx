@@ -95,6 +95,12 @@ const Login = () => {
         value={password} 
         onChangeText={setPassword} 
       />
+      <TouchableOpacity style={styles.linkTextFinal} onPress={() => navigation.navigate("ForgotPassword")}>
+        <Text style={[styles.linkText, {marginTop: 0}]}>
+          Esqueceu a senha?
+        </Text>
+      </TouchableOpacity>
+
 
       <View style={styles.loginOrWith}>
         <View style={styles.lineLoginWith}></View>
