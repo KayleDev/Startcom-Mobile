@@ -9,8 +9,7 @@ export const styles = StyleSheet.create({
         borderRadius: globalStyle.borderRadius,
         justifyContent: "center",
         alignItems: "center",
-        marginTop: 16,
-        marginBottom: 16,
+        marginVertical: 16,
     },
 
     buttonText: {
