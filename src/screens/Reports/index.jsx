@@ -8,13 +8,14 @@ import PeriodSelector from '../../components/PeriodSelector';
 import Button from '../../components/Button';
 import ReportCard from '../../components/ReportCard';
 
-import { Plus, DollarSign, TrendingUp, Users, Package, ChartLine, ChartPie } from 'lucide-react-native';
+import { Plus, DollarSign, TrendingUp, Users, Package, ChartLine, ChartPie, Clipboard } from 'lucide-react-native';
 
 import { styles } from './styles';
 import { commonUserStyles } from '../../styles/commonUserStyles.js';
 import { globalStyle } from '../../styles/globalStyle.js';
 import BezierLineChart from '../../components/BezierLineChart';
-import CategoryPieChart from '../../components/categoryPieChart';
+import CategoryPieChart from '../../components/CategoryPieChart';
+import GeneratedReportCard from '../../components/GeneratedReport/index.jsx'
 
 const Reports = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -114,6 +115,50 @@ const Reports = () => {
           </View>
         
           <CategoryPieChart period={selectedPeriod} />
+        </View>
+
+        <View style={styles.generatedReportContainer}>
+
+          <View style={commonUserStyles.sectionTitleContainer}>
+              <Clipboard size={24} color={globalStyle.primary} />
+              <Text style={commonUserStyles.sectionTitle}>Relatórios Gerados</Text>
+          </View>
+
+          <GeneratedReportCard
+            title="Vendas Mensais"
+            description="Relatório completo de vendas do último mês"
+            type="PDF"
+            size="2.3 MB"
+            date="16/09/2025"
+            state={true}
+          />
+
+          <GeneratedReportCard
+            title="Análise de Clientes"
+            description="Perfil e comportamento dos clientes"
+            type="Excel"
+            size="1.8 MB"
+            date="12/09/2025"
+            state={true}
+          />
+
+          <GeneratedReportCard
+            title="Controle de Estoque"
+            description="Situação atual do inventário"
+            type="PDF"
+            size="3.1 MB"
+            date="16/10/2025"
+            state={false}
+          />
+
+          <GeneratedReportCard
+            title="Fluxo de Caixa"
+            description="Entradas e saídas financeiras"
+            type="Excel"
+            size="2.7 MB"
+            date="08/09/2025"
+            state={true}
+          />
         </View>
       </ScrollView>
 
