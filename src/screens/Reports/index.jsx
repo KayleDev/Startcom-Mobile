@@ -17,6 +17,8 @@ import BezierLineChart from '../../components/BezierLineChart';
 import CategoryPieChart from '../../components/CategoryPieChart';
 import GeneratedReportCard from '../../components/GeneratedReport/index.jsx'
 
+import AccessibleView from '../../components/AccessibleView';
+
 const Reports = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const navigation = useNavigation();
@@ -36,7 +38,7 @@ const Reports = () => {
     <SafeAreaView style={commonUserStyles.safeArea}>
       <Header 
         onMenuPress={() => setIsSidebarOpen(true)}
-        title="Clientes"
+        title="Relatórios"
       />
 
       <ScrollView style={commonUserStyles.screenBlock}>
@@ -65,7 +67,7 @@ const Reports = () => {
           containerStyle={{ marginVertical: 0 }}
         />
 
-        <View style={styles.reportContainer}>
+        <AccessibleView style={styles.reportContainer}>
           <ReportCard
             icon={<DollarSign color={globalStyle.primary}/>}
             color={globalStyle.primary}
@@ -97,28 +99,27 @@ const Reports = () => {
             title="Ticket médio"
             description="+5% vs mês anterior"
           />
-        </View>
+        </AccessibleView>
 
-        <View style={styles.reportChartContainer}>
+        <AccessibleView style={styles.reportChartContainer}>
           <View style={commonUserStyles.sectionTitleContainer}>
             <ChartLine size={24} color={globalStyle.primary} />
             <Text style={commonUserStyles.sectionTitle}>Evolução das Vendas</Text>
           </View>
         
           <BezierLineChart period={selectedPeriod} />
-        </View>
+        </AccessibleView>
         
-        <View style={styles.reportChartContainer}>
+        <AccessibleView style={styles.reportChartContainer}>
           <View style={commonUserStyles.sectionTitleContainer}>
             <ChartPie size={24} color={globalStyle.primary} />
             <Text style={commonUserStyles.sectionTitle}>Categorias de Vendas</Text>
           </View>
         
           <CategoryPieChart period={selectedPeriod} />
-        </View>
+        </AccessibleView>
 
         <View style={styles.generatedReportContainer}>
-
           <View style={commonUserStyles.sectionTitleContainer}>
               <Clipboard size={24} color={globalStyle.primary} />
               <Text style={commonUserStyles.sectionTitle}>Relatórios Gerados</Text>

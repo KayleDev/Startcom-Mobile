@@ -52,7 +52,7 @@ export const styles = StyleSheet.create({
   },
 
   highlightCardsContainer: {
-    marginBottom: 40,
+    marginBottom: 16,
     padding: 20,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },

@@ -17,6 +17,8 @@ import { Plus, DollarSign, ShoppingCart, TrendingUp, Funnel} from 'lucide-react-
 import { globalStyle } from '../../styles/globalStyle.js';
 import SalesInfo from '../../components/SalesInfo/index.jsx';
 
+import AccessibleView from '../../components/AccessibleView';
+
 const Sales = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const navigation = useNavigation();
@@ -124,7 +126,7 @@ const Sales = () => {
           onPress={handleSale}
         />
 
-        <View style={styles.salesContainer}>
+        <AccessibleView style={styles.salesContainer}>
           <SalesCard 
             title="Vendas Hoje"
             amount="R$ 1.247,50"
@@ -148,7 +150,7 @@ const Sales = () => {
             icon={<TrendingUp color={globalStyle.primary}/>}
             iconBgColor={globalStyle.primaryTransparent}
           />
-        </View>
+        </AccessibleView>
 
         <View style={commonUserStyles.filterContainer}>
           <Input 
@@ -158,7 +160,7 @@ const Sales = () => {
             value={search}
           />
 
-          <View style={commonUserStyles.filters}>
+          <AccessibleView style={commonUserStyles.filters}>
             <PeriodSelector
               periods={["Hoje", "Esta Semana", "Este Mês", "Este Ano"]}
               defaultPeriod="Este Mês"
@@ -177,7 +179,7 @@ const Sales = () => {
               onFilterChange={setSelectedStatuses}
               containerStyle={{width: "49%"}}
             />
-          </View>
+          </AccessibleView>
         </View>
 
         <Text style={commonUserStyles.resultCount}>

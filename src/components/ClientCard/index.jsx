@@ -3,6 +3,7 @@ import { View, Text } from 'react-native';
 import { Mail, Phone, MapPin } from 'lucide-react-native';
 import { styles } from './styles';
 import { globalStyle } from '../../styles/globalStyle';
+import AccessibleView from '../AccessibleView';
 
 const ClientCard = ({ 
   name,
@@ -42,21 +43,21 @@ const ClientCard = ({
   return (
     <View style={styles.card}>
       <View style={styles.header}>
-        <View style={[styles.avatar, { backgroundColor: globalStyle.primary }]}>
+        <AccessibleView style={[styles.avatar, { backgroundColor: globalStyle.primary }]}>
           <Text style={styles.initials}>{initials}</Text>
-        </View>
+        </AccessibleView>
         
         <View style={styles.nameContainer}>
           <Text style={styles.name}>{name}</Text>
-          <View style={[styles.badge, { backgroundColor: color + "20"}]}>
+          <AccessibleView style={[styles.badge, { backgroundColor: color + "20"}]}>
             <Text style={[styles.badgeText, { color }]}>
               {badge}
             </Text>
-          </View>
+          </AccessibleView>
         </View>
       </View>
 
-      <View style={styles.contactInfo}>
+      <AccessibleView style={styles.contactInfo}>
         <View style={styles.infoRow}>
           <Mail size={16} color="#6B7280" />
           <Text style={styles.infoText}>{email}</Text>
@@ -71,18 +72,18 @@ const ClientCard = ({
           <MapPin size={16} color="#6B7280" />
           <Text style={styles.infoText}>{location}</Text>
         </View>
-      </View>
+      </AccessibleView>
 
       <View style={styles.footer}>
-        <View style={styles.footerItem}>
+        <AccessibleView style={styles.footerItem}>
           <Text style={styles.footerLabel}>Total gasto</Text>
           <Text style={styles.footerValue}>{totalSpent}</Text>
-        </View>
+        </AccessibleView>
 
-        <View style={styles.footerItem}>
+        <AccessibleView style={styles.footerItem}>
           <Text style={styles.footerLabel}>Última compra</Text>
           <Text style={styles.footerDate}>{lastPurchase}</Text>
-        </View>
+        </AccessibleView>
       </View>
     </View>
   );

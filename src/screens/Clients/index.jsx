@@ -16,6 +16,8 @@ import { globalStyle } from '../../styles/globalStyle.js';
 
 import { Plus, UserRound, Star, Calendar, Smile } from 'lucide-react-native';
 
+import AccessibleView from '../../components/AccessibleView';
+
 const Clients = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const navigation = useNavigation();
@@ -108,7 +110,7 @@ const Clients = () => {
           onPress={handleClient}
         />
 
-        <View style={styles.statsContainer}>
+        <AccessibleView style={styles.statsContainer}>
           <StatsCard
             icon={<UserRound color={globalStyle.primary} />}
             color={globalStyle.primary}
@@ -136,7 +138,7 @@ const Clients = () => {
             value={4.8}
             description="Satisfação Média"
           />
-        </View>
+        </AccessibleView>
 
         <View style={commonUserStyles.filterContainer}>
           <Input
@@ -161,7 +163,7 @@ const Clients = () => {
           {filteredClients.length} {filteredClients.length === 1 ? 'cliente encontrado (a)' : 'clientes encontrados'}
         </Text>
 
-        <View style={styles.clientContainer}>
+        <AccessibleView style={styles.clientContainer}>
           {filteredClients.length > 0 ? (
             filteredClients.map((client, index) => (
               <ClientCard
@@ -180,7 +182,7 @@ const Clients = () => {
               Nenhum cliente encontrado.
             </Text>
           )}
-        </View>
+        </AccessibleView>
       </ScrollView>
 
       <Sidebar

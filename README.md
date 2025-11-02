@@ -1,7 +1,3 @@
-# The CLI development environment was switched to Expo, so this way of running the project is currently NOT FUNCTIONAL.
-**The updated version will be available on 20/10/2025.**
-
-
 # 📱 StartCom Mobile
 
 **StartCom Mobile** is the mobile application for the **StartCom** project (TCC), developed with **React Native**.  
@@ -35,16 +31,6 @@ cd startcom-mobile
 Install dependencies
 ```bash
 npm install
-```
-
-Install required native libraries
-```bash
-npx expo install react-native-safe-area-context react-native-screens react-native-gesture-handler react-native-reanimated
-```
-
-Start the Metro bundler
-```bash
-npx react-native start
 ```
 
 Run on Android or iOS

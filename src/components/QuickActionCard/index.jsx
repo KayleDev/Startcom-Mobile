@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Text, TouchableOpacity} from 'react-native';
 import { styles } from './styles';
 import { globalStyle } from '../../styles/globalStyle';
+import AccessibleView from '../AccessibleView';
 const QuickActionCard = ({ 
   icon, 
   title, 
@@ -16,14 +17,14 @@ const QuickActionCard = ({
       onPress={onPress}
       activeOpacity={0.7}
     >
-      <View style={[styles.iconContainer, { backgroundColor: iconBgColor }]}>
+      <AccessibleView style={[styles.iconContainer, { backgroundColor: iconBgColor }]}>
         {icon}
-      </View>
+      </AccessibleView>
       
-      <View style={styles.textContainer}>
+      <AccessibleView style={styles.textContainer}>
         <Text style={styles.title}>{title}</Text>
         <Text style={styles.description}>{description}</Text>
-      </View>
+      </AccessibleView>
     </TouchableOpacity>
   );
 };

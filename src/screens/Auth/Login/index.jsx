@@ -13,6 +13,8 @@ import GoogleLogo from '../../../assets/icons/GoogleLogo.png';
 import AppleLogo from '../../../assets/icons/AppleLogo.png';
 import Logo from '../../../assets/StartComLogo.png';
 
+import AccessibleView from "../../../components/AccessibleView";
+
 const Login = () => {
   const navigation = useNavigation();
   const { signIn } = useAuth();
@@ -72,7 +74,7 @@ const Login = () => {
   };
 
   return (
-    <View style={styles.container}>
+    <AccessibleView style={styles.container}>
       <Image
         style={styles.logoImage}
         source={Logo}
@@ -108,7 +110,7 @@ const Login = () => {
         <View style={styles.lineLoginWith}></View>
       </View>
 
-      <View style={styles.loginWithContainer}>
+      <AccessibleView style={styles.loginWithContainer}>
         <TouchableOpacity style={styles.loginWithButton}>
           <Image source={GoogleLogo} style={styles.loginWithImage} />
           <Text style={styles.loginWithText}>Entrar com Google</Text>
@@ -118,7 +120,7 @@ const Login = () => {
           <Image source={AppleLogo} style={styles.loginWithImage} />
           <Text style={styles.loginWithText}>Entrar com Apple</Text>
         </TouchableOpacity>
-      </View>
+      </AccessibleView>
 
       <Button
         title="Login" 
@@ -145,7 +147,7 @@ const Login = () => {
           </Text>
         </Text>
       </TouchableOpacity>
-    </View>
+    </AccessibleView>
   );
 };
 

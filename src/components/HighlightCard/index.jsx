@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Text } from 'react-native';
 import { styles } from './styles';
 import { globalStyle } from '../../styles/globalStyle';
+import AccessibleView from '../AccessibleView';
 
 const HighlightCard = ({ 
   title, 
@@ -13,10 +14,10 @@ const HighlightCard = ({
 }) => {
   return (
     <View style={styles.card}>
-      <View style={styles.leftContent}>
+      <AccessibleView style={styles.leftContent}>
         <Text style={styles.title}>{title}</Text>
         <Text style={styles.subtitle}>{subtitle}</Text>
-      </View>
+      </AccessibleView>
       
       <View style={styles.rightContent}>
         <Text style={[styles.value, { color: valueColor }]}>

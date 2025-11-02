@@ -4,6 +4,7 @@ import AppNavigator from "./src/navigation/AppNavigator";
 import { AuthProvider } from "./src/contexts/AuthContext";
 import { useFonts } from "expo-font";
 import { View, ActivityIndicator } from "react-native";
+import { AccessibilityProvider } from "./src/contexts/AccessibilityContext";
 
 export default function App() {
   const [fontsLoaded] = useFonts({
@@ -22,9 +23,11 @@ export default function App() {
   return (
     <>
       <SafeAreaProvider>
-        <AuthProvider>
-          <AppNavigator />
-        </AuthProvider>
+        <AccessibilityProvider>
+          <AuthProvider>
+            <AppNavigator />
+          </AuthProvider>
+        </AccessibilityProvider>
       </SafeAreaProvider>
     </>
   );

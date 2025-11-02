@@ -14,6 +14,8 @@ import CPFCNPJToggle from "../../../components/CPFCNPJToggle";
 
 import { formatCPF, formatCNPJ, formatPHONE } from "../../../utils/masks";
 
+import AccessibleView from "../../../components/AccessibleView";
+
 const Register = () => {
   const navigation = useNavigation();
 
@@ -69,7 +71,7 @@ const Register = () => {
 
 
   return (
-    <View style={styles.container}>
+    <AccessibleView style={styles.container}>
       <Text style={styles.title}>Cadastro</Text>
 
       <Input 
@@ -79,7 +81,7 @@ const Register = () => {
         onChangeText={setName} 
       />
 
-      <View style={styles.inputBlock}>
+      <AccessibleView style={styles.inputBlock}>
         <DatePickerInput label={"Data de nascimento"} date={date} setDate={setDate} />
 
         <Input
@@ -92,7 +94,7 @@ const Register = () => {
           style={{ width: '49%', marginBottom: 0 }}
           maxLength={15}
         />
-      </View>
+      </AccessibleView>
 
       <CPFCNPJToggle 
         onChangeText={setDocument}
@@ -109,7 +111,7 @@ const Register = () => {
         onChangeText={setEmail} 
       />
 
-      <View style={styles.inputBlock}>
+      <AccessibleView style={styles.inputBlock}>
         <Input 
           label="Senha" 
           placeholder="••••••••••••••••"
@@ -127,7 +129,7 @@ const Register = () => {
           onChangeText={setConfirmPassword} 
           style={{ width: '49%', marginBottom: 0 }}
         />
-      </View>
+      </AccessibleView>
 
       <Button
         title="Cadastrar" 
@@ -143,7 +145,7 @@ const Register = () => {
           </Text>
         </Text>
       </TouchableOpacity>
-    </View>
+    </AccessibleView>
   )
 }
 

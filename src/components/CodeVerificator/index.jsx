@@ -2,6 +2,7 @@ import { View, TextInput, Alert } from 'react-native'
 import { useRef, useState, useEffect } from 'react'
 import { useNavigation } from '@react-navigation/native'
 import styles from './styles'
+import AccessibleView from '../AccessibleView'
 
 const CodeVerificator = ({ onCodeComplete }) => {
   const navigation = useNavigation()
@@ -41,8 +42,8 @@ const CodeVerificator = ({ onCodeComplete }) => {
   }
 
   return (
-    <View style={styles.container}>
-      <View style={styles.codeContainer}>
+    <AccessibleView style={styles.container}>
+      <AccessibleView style={styles.codeContainer}>
         {code.map((digit, index) => (
           <TextInput
             key={index}
@@ -57,8 +58,8 @@ const CodeVerificator = ({ onCodeComplete }) => {
             placeholderTextColor="#ccc"
           />
         ))}
-      </View>
-    </View>
+      </AccessibleView>
+    </AccessibleView>
   )
 }
 

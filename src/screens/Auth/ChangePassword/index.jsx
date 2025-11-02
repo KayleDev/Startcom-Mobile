@@ -10,6 +10,8 @@ import BackButton from "../../../components/BackButton"
 
 import { styles } from "./styles"
 
+import AccessibleView from "../../../components/AccessibleView";
+
 const ChangePassword = () => {
     const navigation = useNavigation();
 
@@ -36,7 +38,7 @@ const ChangePassword = () => {
             <Text style={styles.title}>Redefinir senha!</Text>
             <Text style={styles.description}>Escolha uma nova senha e confirme para recuperar o acesso à sua conta.</Text>
             
-            <View style={styles.actions}>
+            <AccessibleView style={styles.actions}>
                 <Input 
                     label="Senha" 
                     placeholder="••••••••••••••••"
@@ -58,7 +60,7 @@ const ChangePassword = () => {
                     onPress={handleRedirect} 
                     style={{marginVertical: 0}}
                 />
-            </View>
+            </AccessibleView>
         </SafeAreaView>
     )
 }

@@ -3,6 +3,8 @@ import { View, TextInput, Text, TouchableOpacity } from "react-native";
 import { MaterialIcons } from '@expo/vector-icons';
 import { styles } from "./styles.js";
 
+import AccessibleView from "../AccessibleView/index.jsx";
+
 const Input = ({ label, placeholder, keyboardType, value, onChangeText, secureTextEntry = false, formatPHONE, style, maxLength, styleInput }) => {
   const [isSecure, setIsSecure] = useState(secureTextEntry);
 
@@ -12,7 +14,7 @@ const Input = ({ label, placeholder, keyboardType, value, onChangeText, secureTe
   };
 
   return (
-    <View style={[{ marginBottom: 16 }, style]}>
+    <AccessibleView style={[{ marginBottom: 16 }, style]}>
       {label && <Text style={styles.labelText}>{label}</Text>}
 
       <View style={[styles.inputContainer, styleInput]}>
@@ -34,7 +36,7 @@ const Input = ({ label, placeholder, keyboardType, value, onChangeText, secureTe
           </TouchableOpacity>
         )}
       </View>
-    </View>
+    </AccessibleView>
   );
 };
 

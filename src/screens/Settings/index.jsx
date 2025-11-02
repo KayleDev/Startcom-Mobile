@@ -10,11 +10,13 @@ import Sidebar from '../../layout/Sidebar';
 import Input from '../../components/Input';
 import Button from '../../components/Button';
 import CPFCNPJToggle from '../../components/CPFCNPJToggle';
-import NotificationItem from '../../components/NotificationItem';
+import PreferenceItem from '../../components/PreferenceItem';
 import { formatCPF, formatCNPJ } from "../../utils/masks";
 import { styles } from './styles';
 import { commonUserStyles } from '../../styles/commonUserStyles';
 import { globalStyle } from '../../styles/globalStyle';
+import AccessibleView from '../../components/AccessibleView';
+import { useAccessibility } from '../../contexts/AccessibilityContext';
 
 const Settings = () => {
   const [businessName, setBusinessName] = useState("Minha Empresa");
@@ -23,8 +25,10 @@ const Settings = () => {
   const [phone, setPhone] = useState("(11) 98765-4321");
   const [address, setAddress] = useState("Rua Exemplo, 123, São Paulo - SP");
   const [loading, setLoading] = useState(false);
-
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
+  const { increasedSpacing, setIncreasedSpacing } = useAccessibility();
+
   const navigation = useNavigation();
   const route = useRoute();
 
@@ -66,7 +70,7 @@ const Settings = () => {
     <SafeAreaView style={commonUserStyles.safeArea}>
       <Header 
         onMenuPress={() => setIsSidebarOpen(true)}
-        title="Clientes"
+        title="Configurações"
       />
 
       <ScrollView style={commonUserStyles.screenBlock}>
@@ -129,39 +133,17 @@ const Settings = () => {
           />
         </View>
 
-        
-        <View style={styles.notificationContainer}>
+        <View style={styles.accessibilityContainer}>
           <View style={commonUserStyles.sectionTitleContainer}>
             <Bell size={24} color={globalStyle.primary} />
-            <Text style={commonUserStyles.sectionTitle}>Notificações</Text>
+            <Text style={commonUserStyles.sectionTitle}>Acessibilidade</Text>
           </View>
 
-          <NotificationItem 
-            title="Estoque Baixo" 
-            description="Receber alerta quando um produto atingir o estoque mínimo."
-            defaultValue={true}
-            onToggle={(value) => console.log('Toggle:', value)}
-          />
-          
-          <NotificationItem 
-            title="Novas Vendas" 
-            description="Receber notificação a cada nova venda concluída."
-            defaultValue={true}
-            onToggle={(value) => console.log('Toggle:', value)}
-          />
-
-          <NotificationItem 
-            title="Relatórios Semanais" 
-            description="Receber um resumo do desempenho da semana por e-mail."
-            defaultValue={false}
-            onToggle={(value) => console.log('Toggle:', value)}
-          />
-          
-          <NotificationItem 
-            title="Lembretes de Tarefas" 
-            description="Ser lembrado de tarefas pendentes e agendadas."
-            defaultValue={true}
-            onToggle={(value) => console.log('Toggle:', value)}
+          <PreferenceItem 
+            title="Espaçamento Vertical Ampliado" 
+            description="Aumenta o espaçamento entre os elementos para melhor leitura."
+            defaultValue={increasedSpacing > 0}
+            onToggle={(value) => setIncreasedSpacing(value ? 16 : 0)}
           />
         </View>
       </ScrollView>

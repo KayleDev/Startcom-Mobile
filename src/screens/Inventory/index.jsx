@@ -16,6 +16,8 @@ import { styles } from './styles';
 import { commonUserStyles } from '../../styles/commonUserStyles.js';
 import { globalStyle } from '../../styles/globalStyle.js';
 
+import AccessibleView from '../../components/AccessibleView';
+
 const Inventory = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const navigation = useNavigation();
@@ -94,7 +96,7 @@ const Inventory = () => {
           onPress={handleInventory}
         />
 
-        <View style={styles.productContainer}>
+        <AccessibleView style={styles.productContainer}>
           <ProductCard
             title="Total de Produtos"
             value={4}
@@ -124,7 +126,7 @@ const Inventory = () => {
             icon={<Package color={globalStyle.primary}/>}
             color={globalStyle.primary}
           />
-        </View>
+        </AccessibleView>
         
         <View style={commonUserStyles.filterContainer}>
           <Input 
@@ -134,7 +136,7 @@ const Inventory = () => {
             value={search}
           />
 
-          <View style={commonUserStyles.filters}>
+          <AccessibleView style={commonUserStyles.filters}>
             <StatusFilter
               title="Filtrar Categoria"
               filters={[
@@ -158,7 +160,7 @@ const Inventory = () => {
               onFilterChange={setStatus}
               containerStyle={{width: "49%"}}
             />
-          </View>
+          </AccessibleView>
         </View>
 
         <Text style={commonUserStyles.resultCount}>

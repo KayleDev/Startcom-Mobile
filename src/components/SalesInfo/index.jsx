@@ -3,6 +3,7 @@ import { View, Text, TouchableOpacity, FlatList } from 'react-native';
 import { Eye } from 'lucide-react-native';
 import { styles } from './styles';
 import { globalStyle } from '../../styles/globalStyle';
+import AccessibleView from '../AccessibleView';
 
 const SalesInfo = ({ 
   orders = [],
@@ -28,7 +29,7 @@ const SalesInfo = ({
   };
 
   const renderOrderCard = ({ item }) => (
-    <View style={styles.card}>
+    <AccessibleView style={styles.card}>
       <View style={styles.cardHeader}>
         <Text style={styles.orderId}>{item.id}</Text>
         <TouchableOpacity 
@@ -39,46 +40,46 @@ const SalesInfo = ({
         </TouchableOpacity>
       </View>
 
-      <View style={styles.cardBody}>
-        <View style={styles.infoRow}>
+      <AccessibleView style={styles.cardBody}>
+        <AccessibleView style={styles.infoRow}>
           <Text style={styles.label}>Cliente</Text>
           <Text style={styles.value}>{item.client}</Text>
-        </View>
+        </AccessibleView>
 
-        <View style={styles.infoRow}>
+        <AccessibleView style={styles.infoRow}>
           <Text style={styles.label}>Data</Text>
           <Text style={styles.value}>{formatDate(item.date)}</Text>
-        </View>
+        </AccessibleView>
 
-        <View style={styles.infoRow}>
+        <AccessibleView style={styles.infoRow}>
           <Text style={styles.label}>Valor</Text>
           <Text style={styles.valuePrice}>{item.value}</Text>
-        </View>
+        </AccessibleView>
 
-        <View style={styles.infoRow}>
+        <AccessibleView style={styles.infoRow}>
           <Text style={styles.label}>Itens</Text>
           <Text style={styles.value}>{item.items}</Text>
-        </View>
-      </View>
+        </AccessibleView>
+      </AccessibleView>
 
-      <View style={styles.cardFooter}>
-        <View style={[styles.statusBadge, getStatusStyle(item.status)]}>
+      <AccessibleView style={styles.cardFooter}>
+        <AccessibleView style={[styles.statusBadge, getStatusStyle(item.status)]}>
           <Text style={styles.statusText}>{item.status}</Text>
-        </View>
-      </View>
-    </View>
+        </AccessibleView>
+      </AccessibleView>
+    </AccessibleView>
   );
 
   const renderEmptyList = () => (
-    <View style={{ padding: 20, alignItems: 'center' }}>
+    <AccessibleView style={{ padding: 20, alignItems: 'center' }}>
       <Text style={{ fontSize: 16, color: '#999', textAlign: 'center' }}>
         Nenhuma venda encontrada com os filtros selecionados.
       </Text>
-    </View>
+    </AccessibleView>
   );
 
   return (
-    <View style={styles.container}>
+    <AccessibleView style={styles.container}>
       <FlatList
         data={orders}
         renderItem={renderOrderCard}
@@ -87,7 +88,7 @@ const SalesInfo = ({
         scrollEnabled={false}
         ListEmptyComponent={renderEmptyList}
       />
-    </View>
+    </AccessibleView>
   );
 };
 

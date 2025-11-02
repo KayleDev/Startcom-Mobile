@@ -4,6 +4,7 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import { styles } from '../Input/styles.js';
 import { styles as datePickerStyles } from './styles.js';
 import { CalendarDays } from 'lucide-react-native';
+import AccessibleView from '../AccessibleView/index.jsx';
 
 export default function DatePickerInput({ date, setDate, label }) {
   const [show, setShow] = useState(false);
@@ -14,7 +15,7 @@ export default function DatePickerInput({ date, setDate, label }) {
   };
 
   return (
-    <View style={{ width: "49%", marginBottom: 16 }}>
+    <AccessibleView style={{ width: "49%", marginBottom: 16 }}>
       {label && <Text style={styles.labelText}>{label}</Text>}
       
       <TouchableOpacity
@@ -35,6 +36,6 @@ export default function DatePickerInput({ date, setDate, label }) {
           />
         )}
       </TouchableOpacity>
-    </View>
+    </AccessibleView>
   );
 }

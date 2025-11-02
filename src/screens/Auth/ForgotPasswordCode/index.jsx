@@ -8,6 +8,8 @@ import CodeVerificator from "../../../components/CodeVerificator";
 
 import { styles } from "./styles";
 
+import AccessibleView from "../../../components/AccessibleView";
+
 const ForgotPasswordCode = () => {
     const navigation = useNavigation();
     const [verifiedCode, setVerifiedCode] = useState('');
@@ -32,14 +34,14 @@ const ForgotPasswordCode = () => {
             <Text style={styles.title}>Redefinição de senha</Text>
             <Text style={styles.description}>Insira o código enviado por e-mail.</Text>
 
-            <View style={styles.actions}>
+            <AccessibleView style={styles.actions}>
                 <CodeVerificator onCodeComplete={handleCodeComplete}/>
                 <Button         
                     title="Enviar" 
                     onPress={handleRedirect} 
                     style={{marginVertical: 0}}
                 />
-            </View>
+            </AccessibleView>
         </SafeAreaView>
     )
 }

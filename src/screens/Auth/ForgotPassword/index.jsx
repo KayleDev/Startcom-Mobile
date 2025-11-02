@@ -8,6 +8,8 @@ import BackButton from "../../../components/BackButton";
 
 import { styles } from "./styles";
 
+import AccessibleView from "../../../components/AccessibleView";
+
 const ForgotPassword = () => {
     const navigation = useNavigation();
     const [email, setEmail] = useState('');
@@ -27,7 +29,7 @@ const ForgotPassword = () => {
             <Text style={styles.title}>Redefinição de senha</Text>
             <Text style={styles.description}>Informe um e-mail e enviaremos um código para recuperação de sua senha.</Text>
 
-            <View style={styles.actions}>
+            <AccessibleView style={styles.actions}>
                 <Input 
                     label='E-mail'              
                     keyboardType="email-address" 
@@ -41,7 +43,7 @@ const ForgotPassword = () => {
                     onPress={handleRedirect} 
                     style={{marginVertical: 0}}
                 />
-            </View>
+            </AccessibleView>
         </SafeAreaView>
     )
 }

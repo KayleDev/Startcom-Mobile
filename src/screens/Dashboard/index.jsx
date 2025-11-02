@@ -21,6 +21,8 @@ import QuickActionCard from '../../components/QuickActionCard/';
 import ActivityCard from '../../components/ActivityCard/';
 import HighlightCard from '../../components/HighlightCard';
 
+import AccessibleView from '../../components/AccessibleView';
+
 const Dashboard = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [selectedPeriod, setSelectedPeriod] = useState('7 dias');
@@ -142,14 +144,14 @@ const Dashboard = () => {
         </View>
 
         {/* Sales Chart Section */}
-        <View style={styles.salesChartContainer}>
+        <AccessibleView style={styles.salesChartContainer}>
           <View style={commonUserStyles.sectionTitleContainer}>
             <TrendingUp size={24} color={globalStyle.primary} />
             <Text style={commonUserStyles.sectionTitle}>Desempenho de Vendas - {selectedPeriod}</Text>
           </View>
 
           <SalesChart period={selectedPeriod} />
-        </View>
+        </AccessibleView>
 
         {/* Quick Actions Section */}
         <View style={styles.quickActionsContainer}>
@@ -157,6 +159,7 @@ const Dashboard = () => {
             <Plus size={24} color={globalStyle.primary} />
             <Text style={commonUserStyles.sectionTitle}>Ações Rápidas</Text>
           </View>
+          
           <QuickActionCard
             icon={<ShoppingCart size={24} color="#FFFFFF" />}
             title="Nova Venda"

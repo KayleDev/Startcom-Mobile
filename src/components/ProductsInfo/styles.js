@@ -3,7 +3,7 @@ import { globalStyle } from "../../styles/globalStyle";
 
 export const styles = StyleSheet.create({
   container: {
-    marginBottom: 30,
+    marginBottom: 4,
   },  
   card: {
     backgroundColor: "#FFFFFF",

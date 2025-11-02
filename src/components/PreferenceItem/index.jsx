@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { View, Text, Switch } from 'react-native';
 import { styles } from './styles';
+import AccessibleView from '../AccessibleView';
 
-const NotificationItem = ({ title, description, defaultValue = false, onToggle }) => {
+const PreferenceItem = ({ title, description, defaultValue = false, onToggle }) => {
   const [isEnabled, setIsEnabled] = useState(defaultValue);
 
   const handleToggle = (value) => {
@@ -13,11 +14,11 @@ const NotificationItem = ({ title, description, defaultValue = false, onToggle }
   };
 
   return (
-    <View style={styles.container}>
-      <View style={styles.textContainer}>
+    <AccessibleView style={styles.container}>
+      <AccessibleView style={styles.textContainer}>
         <Text style={styles.title}>{title}</Text>
         <Text style={styles.description}>{description}</Text>
-      </View>
+      </AccessibleView>
       <Switch
         value={isEnabled}
         onValueChange={handleToggle}
@@ -25,8 +26,8 @@ const NotificationItem = ({ title, description, defaultValue = false, onToggle }
         thumbColor="#FFFFFF"
         ios_backgroundColor="#D1D5DB"
       />
-    </View>
+    </AccessibleView>
   );
 }
 
-export default NotificationItem;
+export default PreferenceItem;

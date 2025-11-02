@@ -3,10 +3,12 @@ import { Eye, Download, ChartColumn } from 'lucide-react-native'
 import { styles } from "./styles"
 import { globalStyle } from "../../styles/globalStyle"
 
+import AccessibleView from "../AccessibleView"
+
 const GeneratedReportCard = ({title, description, type, size, date, state}) => {
   return (
-    <View style={styles.card}>
-      <View style={[styles.iconBoxPrincipal, {borderColor: globalStyle.primary}]}><ChartColumn color={globalStyle.primary} size={24}/></View>
+    <AccessibleView style={styles.card}>
+      <AccessibleView style={[styles.iconBoxPrincipal, {borderColor: globalStyle.primary}]}><ChartColumn color={globalStyle.primary} size={24}/></AccessibleView>
       <Text style={styles.title}>{title}</Text>
       <Text style={styles.description}>{description}</Text>
       <Text style={styles.type}>Tipo: {type}</Text>
@@ -15,17 +17,17 @@ const GeneratedReportCard = ({title, description, type, size, date, state}) => {
 
       {state ? 
       <View style={styles.box}>
-          <View style={styles.prepared}><Text style={styles.textPrepared}>Pronto</Text></View>
+          <AccessibleView style={styles.prepared}><Text style={styles.textPrepared}>Pronto</Text></AccessibleView>
           <TouchableOpacity style={styles.iconBox}><Eye/></TouchableOpacity>
           <TouchableOpacity style={styles.iconBox}><Download/></TouchableOpacity>
       </View> 
       : 
-      <View style={styles.unprepared}>
+      <AccessibleView style={styles.unprepared}>
         <Text style={styles.textUnprepared}>Processando</Text>
-      </View>
+      </AccessibleView>
       }
       
-    </View>
+    </AccessibleView>
   )
 }
 
