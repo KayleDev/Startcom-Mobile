@@ -1,7 +1,11 @@
-import React, { useState, useMemo } from 'react';
-import { View, ScrollView, Text } from 'react-native';
+// src/screens/Clients/Clients.jsx
+import React, { useEffect, useState, useMemo } from 'react';
+import { View, ScrollView, Text, ActivityIndicator, Alert } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 import Header from '../../layout/Header';
 import Sidebar from '../../layout/Sidebar';
 import Button from '../../components/Button';
@@ -9,6 +13,7 @@ import StatsCard from '../../components/StatsCard';
 import Input from '../../components/Input';
 import StatusFilter from '../../components/StatusFilter';
 import ClientCard from '../../components/ClientCard';
+import AccessibleView from '../../components/AccessibleView';
 
 import { styles } from './styles';
 import { commonUserStyles } from '../../styles/commonUserStyles.js';
@@ -16,84 +21,125 @@ import { globalStyle } from '../../styles/globalStyle.js';
 
 import { Plus, UserRound, Star, Calendar, Smile } from 'lucide-react-native';
 
-import AccessibleView from '../../components/AccessibleView';
-
 const Clients = () => {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const navigation = useNavigation();
   const route = useRoute();
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
-  const [search, setSearch] = useState("");
+  const [search, setSearch] = useState('');
   const [selectedStatuses, setSelectedStatuses] = useState(['VIP', 'Premium', 'Regular']);
 
-  const allClients = [
-    {
-      name: 'Carlos Soares Silva',
-      badge: 'VIP',
-      email: 'carlos@gmail.com',
-      phone: '(11) 99999-9999',
-      location: 'São Paulo',
-      totalSpent: 'R$ 1266.80',
-      lastPurchase: '14/04/2025'
-    },
-    {
-      name: 'João Santos',
-      badge: 'Regular',
-      email: 'joao@gmail.com',
-      phone: '(11) 88888-8888',
-      location: 'Rio de Janeiro',
-      totalSpent: 'R$ 845.30',
-      lastPurchase: '11/07/2025'
-    },
-    {
-      name: 'Pedro Henrique Pinheiro',
-      badge: 'Premium',
-      email: 'pedro@gmail.com',
-      phone: '(11) 77777-7777',
-      location: 'Belo Horizonte',
-      totalSpent: 'R$ 2340.50',
-      lastPurchase: '09/09/2025'
-    }
-  ];
+  const [clients, setClients] = useState([]);
+  const [overview, setOverview] = useState({
+    total: 0,
+    vip: 0,
+    newThisMonth: 0,
+    averageSatisfaction: 0,
+  });
 
-  const filteredClients = useMemo(() => {
-    let filtered = allClients;
+  const [loading, setLoading] = useState(true);
 
-    if (selectedStatuses.length > 0) {
-      filtered = filtered.filter(client =>
-        selectedStatuses.includes(client.badge)
+  const fetchOverviewAndClients = async () => {
+    try {
+      setLoading(true);
+      const token = await AsyncStorage.getItem('token');
+      const companyId = await AsyncStorage.getItem('company_id');
+
+      if (!token || !companyId) {
+        throw new Error('Sessão expirada. Faça login novamente.', navigation.navigate('Dashboard'));
+      }
+
+      const response = await axios.post(
+        'http://192.168.0.115:8000/Company/clients/overview_full',
+        { companyId }
       );
+
+      const data = response.data;
+
+      if (data.status === 'success') {
+          setOverview(data.overview.clients);
+
+      const formatted = (data.clients || []).map((c) => ({
+        name: c.name,
+        badge: c.category
+          ? c.category[0].toUpperCase() + c.category.slice(1)
+          : 'Regular',
+        email: c.email || 'Não Informado',
+        phone: c.phone || 'Não Informado',
+        location: c.address || 'Não Informado',
+        totalSpent: c.totalSpent ? c.totalSpent.toLocaleString('pt-BR', {
+            style: 'currency',
+            currency: 'BRL'
+        }) : 'R$ 0,00',
+        lastPurchase: c.lastPurchase.split("-").reverse().join("-") || 'Ainda não comprou',
+      }));
+
+      setClients(formatted);
     } else {
-      return [];
+      throw new Error('Erro na resposta da API.');
     }
+  } catch (error) {
+    Alert.alert('Erro', error.message);
+  } finally {
+    setLoading(false);
+  }
+};
 
-    if (search.trim()) {
-      const term = search.toLowerCase();
-      filtered = filtered.filter(client =>
-        client.name.toLowerCase().includes(term) ||
-        client.email.toLowerCase().includes(term) ||
-        client.phone.toLowerCase().includes(term) ||
-        client.location.toLowerCase().includes(term) ||
-        client.totalSpent.toLowerCase().includes(term) ||
-        client.lastPurchase.toLowerCase().includes(term)
+useEffect(() => {
+  fetchOverviewAndClients();
+}, []);
 
-      );
-    }
+const filteredClients = useMemo(() => {
+  let filtered = clients;
 
-    return filtered;
-  }, [search, selectedStatuses]);
+  if (selectedStatuses.length > 0) {
+    filtered = filtered.filter((c) => selectedStatuses.includes(c.badge));
+  }
 
-  const handleClient = () => {
-    console.log("Novo cliente clicado");
-  };
+  if (search.trim()) {
+    const term = search.toLowerCase();
+    filtered = filtered.filter(
+      (c) =>
+        c.name.toLowerCase().includes(term) ||
+        c.email.toLowerCase().includes(term) ||
+        c.phone.toLowerCase().includes(term) ||
+        c.location.toLowerCase().includes(term)
+    );
+  }
 
-  return (
-    <SafeAreaView style={commonUserStyles.safeArea}>
-      <Header
-        onMenuPress={() => setIsSidebarOpen(true)}
-        title="Clientes"
-      />
+  return filtered;
+}, [clients, search, selectedStatuses]);
 
+const handleNewClient = () => {
+  navigation.navigate('NewClientModal', {
+    onSuccess: (apiResponse) => {
+      const newClient = {
+        name: apiResponse.name,
+        badge: apiResponse.category
+          ? apiResponse.category[0].toUpperCase() + apiResponse.category.slice(1)
+          : 'Regular',
+        email: apiResponse.email || 'Não Informado',
+        phone: apiResponse.phone || 'Não Informado',
+        location: apiResponse.city || 'Não Informado',
+        totalSpent: '0',
+        lastPurchase: 'Não há',
+      };
+      setClients((prev) => [newClient, ...prev]);
+      fetchOverviewAndClients();
+    },
+  });
+};
+
+return (
+  <SafeAreaView style={commonUserStyles.safeArea}>
+    <Header title="Clientes" onMenuPress={() => setIsSidebarOpen(true)} />
+
+    {loading ? (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <ActivityIndicator size="large" color={globalStyle.primary} />
+        <Text style={{ color: '#6B7280', marginTop: 10 }}>Carregando dados...</Text>
+      </View>
+    ) : (
       <ScrollView style={commonUserStyles.screenBlock}>
         <Text style={commonUserStyles.screenTitle}>Clientes</Text>
         <Text style={commonUserStyles.screenDescription}>
@@ -103,39 +149,36 @@ const Clients = () => {
         <Button
           title={
             <View style={commonUserStyles.alignButtonText}>
-              <Plus size={20} color="#FFFFFF" />
+              <Plus size={20} color="#FFF" />
               <Text style={commonUserStyles.saveText}>Novo Cliente</Text>
             </View>
           }
-          onPress={handleClient}
+          onPress={handleNewClient}
         />
 
         <AccessibleView style={styles.statsContainer}>
           <StatsCard
             icon={<UserRound color={globalStyle.primary} />}
             color={globalStyle.primary}
-            value={156}
+            value={overview.total}
             description="Total de Clientes"
           />
-
           <StatsCard
             icon={<Star color="#A855F7" />}
             color="#A855F7"
-            value={23}
+            value={overview.vip}
             description="Clientes VIP"
           />
-
           <StatsCard
             icon={<Calendar color="#F59E0B" />}
             color="#F59E0B"
-            value={12}
+            value={overview.newThisMonth}
             description="Novos este mês"
           />
-
           <StatsCard
             icon={<Smile color="#10B981" />}
             color="#10B981"
-            value={4.8}
+            value={overview.averageSatisfaction?.toFixed(1)}
             description="Satisfação Média"
           />
         </AccessibleView>
@@ -147,9 +190,8 @@ const Clients = () => {
             onChangeText={setSearch}
             value={search}
           />
-
           <StatusFilter
-            title={<>Filtrar por tipo de cliente</>}
+            title="Filtrar por tipo de cliente"
             filters={[
               { id: 1, label: 'VIP' },
               { id: 2, label: 'Premium' },
@@ -158,41 +200,42 @@ const Clients = () => {
             onFilterChange={setSelectedStatuses}
           />
         </View>
-        
+
         <Text style={commonUserStyles.resultCount}>
-          {filteredClients.length} {filteredClients.length === 1 ? 'cliente encontrado (a)' : 'clientes encontrados'}
+          {filteredClients.length}{' '}
+          {filteredClients.length === 1
+            ? 'cliente encontrado'
+            : 'clientes encontrados'}
         </Text>
 
         <AccessibleView style={styles.clientContainer}>
           {filteredClients.length > 0 ? (
             filteredClients.map((client, index) => (
-              <ClientCard
-                key={index}
-                name={client.name}
-                badge={client.badge}
-                email={client.email}
-                phone={client.phone}
-                location={client.location}
-                totalSpent={client.totalSpent}
-                lastPurchase={client.lastPurchase}
-              />
+              <ClientCard key={index} {...client} />
             ))
           ) : (
-            <Text style={{ textAlign: 'center', color: '#6B7280', marginTop: 20 }}>
+            <Text
+              style={{
+                textAlign: 'center',
+                color: '#6B7280',
+                marginTop: 20,
+              }}
+            >
               Nenhum cliente encontrado.
             </Text>
           )}
         </AccessibleView>
       </ScrollView>
+    )}
 
-      <Sidebar
-        isOpen={isSidebarOpen}
-        onClose={() => setIsSidebarOpen(false)}
-        navigation={navigation}
-        currentRoute={route.name}
-      />
-    </SafeAreaView>
-  );
+    <Sidebar
+      isOpen={isSidebarOpen}
+      onClose={() => setIsSidebarOpen(false)}
+      navigation={navigation}
+      currentRoute={route.name}
+    />
+  </SafeAreaView>
+);
 };
 
 export default Clients;
