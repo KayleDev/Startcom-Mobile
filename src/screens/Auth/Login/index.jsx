@@ -5,7 +5,7 @@ import { MaterialIcons } from '@expo/vector-icons';
 import Button from '../../../components/Button';
 import Input from "../../../components/Input/";
 import { useAuth } from "../../../contexts/AuthContext";
-import axios from 'axios';
+import loginAPI from '../../../services/api';
 
 import { styles } from "./styles";
 
@@ -52,14 +52,10 @@ const Login = () => {
         console.log("Token do usuário:", mockToken);
       } else {
         // ========== Real Login ==========
-        const response = await axios.post('http://my-backend.com/login', { 
-          email, 
-          password 
-        });
-        const data = response.data;
+        const data = await loginAPI({ email, password });
 
-        if (data.success) {
-          await signIn(data.user, data.token);
+        if (data.success || data.token) {
+        await signIn("usuario", data.token);
           Alert.alert("Sucesso", "Login realizado!");
         } else {
           Alert.alert("Erro", data.message || "Login falhou");

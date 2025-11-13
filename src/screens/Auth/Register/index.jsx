@@ -3,8 +3,8 @@ import { useNavigation } from "@react-navigation/native";
 
 import { styles } from "./styles";
 
-import axios from 'axios';
 import { Alert } from "react-native";
+import { registerAPI } from "../../../services/api";
 
 import Input from "../../../components/Input";
 import { useState } from "react";
@@ -33,20 +33,12 @@ const Register = () => {
   setLoading(true);
 
   try {
-    const response = await axios.post('http://my-backend.com/register', { 
-      name,
-      phone,
-      birthDate: date.toLocaleDateString('pt-BR'),
-      document,
-      email,
-      password
-    });
-    
+    const response = await registerAPI({name, phone, date, document, email, password});
+
     const data = response.data;
 
     if (data.success) {
       Alert.alert("Sucesso", "Cadastro realizado com sucesso!");
-      console.log("Token do usuário:", data.token);
       navigation.navigate("Login");
     } else {
       Alert.alert("Erro", data.message || "Cadastro falhou");
