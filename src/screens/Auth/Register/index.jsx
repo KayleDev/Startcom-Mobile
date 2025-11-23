@@ -20,36 +20,46 @@ const Register = () => {
   const navigation = useNavigation();
 
   const handleRegister = async () => {
-  if (!name || !phone || !date || !document || !email || !password || !confirmPassword) {
-    Alert.alert("Erro", "Preencha todos os campos!");
-    return;
-  }
-
-  if (password !== confirmPassword) {
-    Alert.alert("Erro", "As senhas não coincidem!");
-    return;
-  }
-
-  setLoading(true);
-
-  try {
-    const response = await registerAPI({name, phone, date, document, email, password});
-
-    const data = response.data;
-
-    if (data.success) {
-      Alert.alert("Sucesso", "Cadastro realizado com sucesso!");
-      navigation.navigate("Login");
-    } else {
-      Alert.alert("Erro", data.message || "Cadastro falhou");
+    if (!name || !phone || !date || !document || !email || !password || !confirmPassword) {
+      Alert.alert("Erro", "Preencha todos os campos!");
+      return;
     }
-  } catch (error) {
-    console.error(error);
-    Alert.alert("Erro", "Não foi possível conectar ao servidor");
-  } finally {
-    setLoading(false);
-  }
-};
+
+    if (password !== confirmPassword) {
+      Alert.alert("Erro", "As senhas não coincidem!");
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      let payload = {
+        name,
+        email,
+        password,
+        date,
+        telefone: phone,
+      };
+
+      if (document.replace(/\D/g, "").length <= 11) {
+        payload.cpf = document;
+      } else {
+        payload.cnpj = document;
+      }
+
+      const response = await registerAPI(payload);
+
+      Alert.alert("Sucesso", "Cadastro realizado!");
+      navigation.navigate("Login");
+      
+    } catch (error) {
+      console.log(error?.response?.data || error);
+      Alert.alert("Erro", "Não foi possível realizar o cadastro");
+    } finally {
+      setLoading(false);
+    }
+  };
+
 
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');

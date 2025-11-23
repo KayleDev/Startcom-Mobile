@@ -3,7 +3,7 @@ import { View, ScrollView, Text, Alert } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import axios from 'axios';
-import { Save, Building, Bell } from 'lucide-react-native';
+import { Save, Building, Bell, PersonStanding } from 'lucide-react-native';
 
 import Header from '../../layout/Header';
 import Sidebar from '../../layout/Sidebar';
@@ -133,9 +133,44 @@ const Settings = () => {
           />
         </View>
 
-        <View style={styles.accessibilityContainer}>
+        <View style={styles.notificationContainer}>
           <View style={commonUserStyles.sectionTitleContainer}>
             <Bell size={24} color={globalStyle.primary} />
+            <Text style={commonUserStyles.sectionTitle}>Notificações</Text>
+          </View>
+
+          <PreferenceItem 
+            title="Estoque Baixo" 
+            description="Receber alerta quando um produto atingir o estoque mínimo."
+            defaultValue={true}
+            onToggle={(value) => console.log('Toggle:', value)}
+          />
+          
+          <PreferenceItem 
+            title="Novas Vendas" 
+            description="Receber notificação a cada nova venda concluída."
+            defaultValue={true}
+            onToggle={(value) => console.log('Toggle:', value)}
+          />
+
+          <PreferenceItem 
+            title="Relatórios Semanais" 
+            description="Receber um resumo do desempenho da semana por e-mail."
+            defaultValue={false}
+            onToggle={(value) => console.log('Toggle:', value)}
+          />
+          
+          <PreferenceItem 
+            title="Lembretes de Tarefas" 
+            description="Ser lembrado de tarefas pendentes e agendadas."
+            defaultValue={true}
+            onToggle={(value) => console.log('Toggle:', value)}
+          />
+        </View>
+
+        <View style={styles.accessibilityContainer}>
+          <View style={commonUserStyles.sectionTitleContainer}>
+            <PersonStanding size={24} color={globalStyle.primary} />
             <Text style={commonUserStyles.sectionTitle}>Acessibilidade</Text>
           </View>
 
@@ -143,7 +178,7 @@ const Settings = () => {
             title="Espaçamento Vertical Ampliado" 
             description="Aumenta o espaçamento entre os elementos para melhor leitura."
             defaultValue={increasedSpacing > 0}
-            onToggle={(value) => setIncreasedSpacing(value ? 16 : 0)}
+            onToggle={(value) => setIncreasedSpacing(value ? 8 : 0)}
           />
         </View>
       </ScrollView>

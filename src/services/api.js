@@ -1,42 +1,63 @@
 import axios from "axios";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const api = axios.create({
-  baseURL:  "http://127.0.0.1:8000", // Backend URL
+  baseURL: "https://api.startcomtech.com.br/",
   headers: {
     "Content-Type": "application/json"
   }
 });
+
+api.interceptors.request.use(
+  async (config) => {
+    const token = await AsyncStorage.getItem("token");
+    if (token) config.headers.Authorization = `Bearer ${token}`;
+    return config;
+  },
+  (error) => Promise.reject(error)
+);
+
+api.interceptors.response.use(
+  (response) => response,
+  async (error) => {
+    const status = error?.response?.status;
+
+    if (status === 403) {
+      global.modalEmitter?.emit("modal", { code: "forbidden", action: "home" });
+    }
+
+    if (status === 419) {
+      global.modalEmitter?.emit("modal", { code: "expired", action: "login" });
+
+      await AsyncStorage.removeItem("token");
+      await AsyncStorage.removeItem("user");
+    }
+
+    return Promise.reject(error);
+  }
+);
 
 export const registerAPI = async (data) => {
   if (!data || typeof data !== 'object') {
     throw new Error("Dados inválidos para registro");
   }
 
-  if (data.password.length < 8) {
-    throw new Error("Senha inválida");
-  }
-  
   try {
-    console.log(data);
     const userData = {
       name: data.name,
       email: data.email,
       birth_date: new Date(data.date).toISOString(),
-      phone_number: `+55${data.phone.replace(/\D/g, '')}`,
-      cpf_cnpj: (data.document).replace(/\D/g, ''),
+      phone_number: `+55${data.telefone.replace(/\D/g, '')}`,
+      cpf_cnpj: (data.cpf || data.cnpj).replace(/\D/g, ''),
       password: data.password
-    }
-    
-    const response = await api.post("/User/register", userData);
+    };
 
-    if (response.data.success) {
-      return response.data;
-    } else {
-      throw new Error(response.data.message || "Erro no registro");
-    }
+    const response = await api.post("/User/register", userData);
+    console.log(response.data)
+    if (response.data) return response.data;
+    throw new Error("Erro ao registrar");
   } catch (error) {
-    console.error("Erro ao registrar usuário:", error.response.data || error);
-    console.error(error.response.data.detail || "Erro desconhecido");
+    console.error("Erro ao registrar usuário:", error.response?.data || error);
     throw error;
   }
 };
@@ -46,27 +67,19 @@ export const loginAPI = async (data) => {
     throw new Error("Dados inválidos para login");
   }
 
-  if (data.password.length < 8) {
-    throw new Error("Senha inválida");
-  }
-
   try {
-    console.log(data);
     const userData = {
       email: data.email,
       password: data.password
-    }
+    };
 
     const response = await api.post("/Auth/login", userData);
 
-    if (response.data.success || response.data.token) {
-      return response.data;
-    } else {
-      throw new Error(response.data.message || "Erro no login");
-    }
+    if (response.data) return response.data;
 
+    throw new Error("Erro ao receber o token");
   } catch (error) {
-    console.error("Erro ao realizar login:", error);
+    console.error("Erro ao realizar login:", error.response?.data || error);
     throw error;
   }
 };

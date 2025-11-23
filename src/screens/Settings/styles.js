@@ -20,7 +20,7 @@ export const styles = StyleSheet.create({
     notificationContainer: {
         gap: 2.5,
         marginTop: 10,
-        marginBottom: 40,
+        marginBottom: 16,
         padding: 20,
         shadowColor: '#000',
         shadowOffset: { width: 0, height: 2 },
