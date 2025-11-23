@@ -5,7 +5,7 @@ import { MaterialIcons } from '@expo/vector-icons';
 import Button from '../../../components/Button';
 import Input from "../../../components/Input/";
 import { useAuth } from "../../../contexts/AuthContext";
-import loginAPI from '../../../services/api';
+import { loginAPI } from '../../../services/api';
 
 import { styles } from "./styles";
 
@@ -33,37 +33,21 @@ const Login = () => {
     setLoading(true);
 
     try {
-      // ========== Test Login (MOCK) ==========
-      const dataMock = true;
-      
-      if (dataMock) {
-        // Fake Data for tests
-        const mockUser = {
-          id: 1,
-          name: "Usuário Teste",
-          email: email,
-        };
-        const mockToken = "mocked-jwt-token-12345";
+      const data = await loginAPI({ email, password });
 
-        // Save in context and AsyncStorage
-        await signIn(mockUser, mockToken);
-        
-        Alert.alert("Sucesso", "Login realizado!");
-        console.log("Token do usuário:", mockToken);
-      } else {
-        // ========== Real Login ==========
-        const data = await loginAPI({ email, password });
-
-        if (data.success || data.token) {
-        await signIn("usuario", data.token);
-          Alert.alert("Sucesso", "Login realizado!");
-        } else {
-          Alert.alert("Erro", data.message || "Login falhou");
-        }
+      if (!data?.access_token) {
+        Alert.alert("Erro", "Resposta do servidor inválida");
+        return;
       }
+
+      await signIn(
+        { email },
+        data.access_token
+      );
+
+      Alert.alert("Sucesso", "Login realizado!");
     } catch (error) {
-      console.error(error);
-      Alert.alert("Erro", "Não foi possível conectar ao servidor");
+      Alert.alert("Erro", "Usuário ou senha inválidos");
     } finally {
       setLoading(false);
     }

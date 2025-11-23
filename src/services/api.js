@@ -10,7 +10,7 @@ const api = axios.create({
 
 api.interceptors.request.use(
   async (config) => {
-    const token = await AsyncStorage.getItem("token");
+    const token = await AsyncStorage.getItem("@app:token");
     if (token) config.headers.Authorization = `Bearer ${token}`;
     return config;
   },
@@ -29,8 +29,8 @@ api.interceptors.response.use(
     if (status === 419) {
       global.modalEmitter?.emit("modal", { code: "expired", action: "login" });
 
-      await AsyncStorage.removeItem("token");
-      await AsyncStorage.removeItem("user");
+      await AsyncStorage.removeItem("@app:token");
+      await AsyncStorage.removeItem("@app:user");
     }
 
     return Promise.reject(error);
@@ -61,23 +61,18 @@ export const registerAPI = async (data) => {
     throw error;
   }
 };
-
 export const loginAPI = async (data) => {
   if (!data || typeof data !== 'object') {
     throw new Error("Dados inválidos para login");
   }
 
   try {
-    const userData = {
+    const response = await api.post("/Auth/login", {
       email: data.email,
       password: data.password
-    };
+    });
 
-    const response = await api.post("/Auth/login", userData);
-
-    if (response.data) return response.data;
-
-    throw new Error("Erro ao receber o token");
+    return response.data;
   } catch (error) {
     console.error("Erro ao realizar login:", error.response?.data || error);
     throw error;
