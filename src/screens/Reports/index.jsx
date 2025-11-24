@@ -32,7 +32,7 @@ const Reports = () => {
   };
 
   const handleReport = () => {
-
+    navigation.navigate("NewReport")
   }
   return (
     <SafeAreaView style={commonUserStyles.safeArea}>

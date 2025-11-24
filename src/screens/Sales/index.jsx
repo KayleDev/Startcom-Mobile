@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import { useState, useMemo } from 'react';
 import { View, ScrollView, Text } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -93,7 +93,7 @@ const Sales = () => {
   }, [search, selectedPeriod, selectedStatuses]);
 
   const handleSale = () => {
-    console.log("Nova venda");
+    navigation.navigate("NewSale");
   };
 
   const handleViewOrder = (order) => {

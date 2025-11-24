@@ -17,6 +17,11 @@ import Inventory from "../screens/Inventory/";
 import Reports from "../screens/Reports/";
 import Settings from "../screens/Settings/";
 
+import NewSale from "../screens/Create/NewSale";
+import NewProduct from "../screens/Create/NewProduct";
+import NewClient from "../screens/Create/NewClient";
+import NewReport from "../screens/Create/NewReport";
+
 const Stack = createStackNavigator();
 
 export default function AppNavigator() {
@@ -42,6 +47,11 @@ export default function AppNavigator() {
             <Stack.Screen name="Inventory" component={Inventory}/>
             <Stack.Screen name="Reports" component={Reports}/>
             <Stack.Screen name="Settings" component={Settings}/>
+
+            <Stack.Screen name="NewSale" component={NewSale}/>
+            <Stack.Screen name="NewProduct" component={NewProduct}/>
+            <Stack.Screen name="NewClient" component={NewClient}/>
+            <Stack.Screen name="NewReport" component={NewReport}/>
           </>
         ) : (
           // ========== Public Routes ==========

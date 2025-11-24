@@ -67,7 +67,7 @@ const Inventory = () => {
   
 
   const handleInventory = () => {
-    console.log("ABCDEFGHIJKLMNOPQRSTUVWXYZ")
+    navigation.navigate("NewProduct")
   }
 
   return (
