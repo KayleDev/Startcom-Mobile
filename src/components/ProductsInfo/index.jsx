@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, FlatList } from 'react-native';
+import { formatCurrency } from '../../utils/masks';
 import { Eye } from 'lucide-react-native';
 import { styles } from './styles';
 import { globalStyle } from '../../styles/globalStyle';
@@ -27,7 +28,7 @@ const ProductsInfo = ({
 
   const renderProductCard = ({ item }) => (
     <AccessibleView style={styles.card}>
-      <AccessibleView style={styles.cardHeader}>
+      {/*<AccessibleView style={styles.cardHeader}>
         <Text style={styles.productId}>{item.id}</Text>
         <TouchableOpacity 
           style={styles.viewButton}
@@ -35,17 +36,12 @@ const ProductsInfo = ({
         >
           <Eye size={20} color={globalStyle.primary} />
         </TouchableOpacity>
-      </AccessibleView>
+      </AccessibleView>*/}
 
       <AccessibleView style={styles.cardBody}>
         <AccessibleView style={styles.infoRow}>
           <Text style={styles.label}>Produto</Text>
-          <Text style={styles.value}>{item.product}</Text>
-        </AccessibleView>
-
-        <AccessibleView style={styles.infoRow}>
-          <Text style={styles.label}>Código</Text>
-          <Text style={styles.value}>{item.code}</Text>
+          <Text style={styles.value}>{item.name}</Text>
         </AccessibleView>
 
         <AccessibleView style={styles.infoRow}>
@@ -55,17 +51,17 @@ const ProductsInfo = ({
 
         <AccessibleView style={styles.infoRow}>
           <Text style={styles.label}>Quantidade</Text>
-          <Text style={styles.value}>{item.amount}</Text>
+          <Text style={styles.value}>{item.quantity}</Text>
         </AccessibleView>
 
         <AccessibleView style={styles.infoRow}>
           <Text style={styles.label}>Mínimo</Text>
-          <Text style={styles.value}>{item.min}</Text>
+          <Text style={styles.value}>{item.minQuantity}</Text>
         </AccessibleView>
 
         <AccessibleView style={styles.infoRow}>
           <Text style={styles.label}>Preço</Text>
-          <Text style={styles.valuePrice}>{item.price}</Text>
+          <Text style={styles.valuePrice}>{item.unitPrice}</Text>
         </AccessibleView>
 
         <AccessibleView style={styles.infoRow}>
@@ -77,7 +73,7 @@ const ProductsInfo = ({
 
         <AccessibleView style={styles.cardFooter}>
           <Text style={styles.label}>Valor Total</Text>
-          <Text style={styles.valuePrice}>{item.totalValue}</Text>
+          <Text style={styles.valuePrice}>{formatCurrency(item.totalValue)}</Text>
         </AccessibleView>
       </AccessibleView>
     </AccessibleView>
@@ -96,7 +92,7 @@ const ProductsInfo = ({
       <FlatList
         data={products}
         renderItem={renderProductCard}
-        keyExtractor={(item) => item.id}
+        keyExtractor={(item, index) => String(item.id ?? item.code ?? `item-${index}`)}
         showsVerticalScrollIndicator={false}
         scrollEnabled={false}
         ListEmptyComponent={renderEmptyList}

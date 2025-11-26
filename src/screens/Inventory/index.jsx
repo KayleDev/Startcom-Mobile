@@ -1,5 +1,5 @@
-import React, { useState, useMemo } from 'react';
-import { View, ScrollView, Text } from 'react-native';
+import React, { useEffect, useState, useMemo } from 'react';
+import { View, ScrollView, Text, ActivityIndicator, Alert, RefreshControl } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Header from '../../layout/Header';
@@ -9,75 +9,149 @@ import ProductCard from '../../components/ProductCard';
 import Input from '../../components/Input';
 import StatusFilter from '../../components/StatusFilter';
 import ProductsInfo from '../../components/ProductsInfo';
+import { formatCurrency } from '../../utils/masks.js';
 
 import { Plus, Box, TrendingDown, TriangleAlert, Package } from "lucide-react-native"
+import AccessibleView from '../../components/AccessibleView';
 
 import { styles } from './styles';
 import { commonUserStyles } from '../../styles/commonUserStyles.js';
 import { globalStyle } from '../../styles/globalStyle.js';
+import api from '../../services/api';
+import { useAuth } from '../../contexts/AuthContext';
 
-import AccessibleView from '../../components/AccessibleView';
+const CATEGORY_OPTIONS = [
+  'Roupas', 'Calçados', 'Acessórios', 'Eletrônicos', 'Informática', 'Alimentos',
+  'Bebidas', 'Móveis', 'Decoração', 'Livros', 'Brinquedos', 'Esportes', 'Beleza', 'Saúde',
+  'Papelaria', 'Ferramentas', 'Autopeças', 'Pet Shop', 'Limpeza', 'Outros'
+];
+
+const STATUS_OPTIONS = [
+  'Normal', 'Baixo', 'Crítico', 'Esgotado'
+];
 
 const Inventory = () => {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const navigation = useNavigation();
   const route = useRoute();
+  const { user, loading: authLoading } = useAuth();
 
-  const [search, setSearch] = useState("")
-  const [category, setCategory] = useState(['Roupas', 'Calçados', 'Acessórios', 'Eletrônicos'])
-  const [status, setStatus] = useState(['Normal', 'Baixo', 'Crítico', 'Esgotado'])
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [search, setSearch] = useState("");
+  const [categoryFilter, setCategoryFilter] = useState(CATEGORY_OPTIONS);
+  const [statusFilter, setStatusFilter] = useState(STATUS_OPTIONS);
+  const [products, setProducts] = useState([]);
+  const [overview, setOverview] = useState({
+    totalProducts: 0,
+    lowInventory: 0,
+    criticalInventory: 0,
+    totalValue: 0,
+  });
+  const [loading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
 
-  const allProducts = [
-    { id: '#001', product: 'Camiseta Premium', code: 'CAM001', category: 'Roupas', amount: '45', min: '10', price: 'R$ 59.99', status: 'Normal', totalValue: 'R$ 2695.59' },
-    { id: '#002', product: 'Tênis Esportivo', code: 'TEN001', category: 'Calçados', amount: '8', min: '15', price: 'R$ 189.99', status: 'Baixo', totalValue: 'R$ 1519.29' },
-    { id: '#003', product: 'Relógio Digital', code: 'MOC001', category: 'Acessórios', amount: '1', min: '5', price: 'R$ 129.99', status: 'Crítico', totalValue: 'R$ 389.79' },
-    { id: '#004', product: 'Mochila Executiva', code: 'REL001', category: 'Eletrônicos', amount: '0', min: '10', price: 'R$ 299.99', status: 'Esgotado', totalValue: 'R$ 6597.89' },
-  ];
-  
+  const fetchInventory = async (isRefresh = false) => {
+    try {
+      if (isRefresh) setRefreshing(true);
+      else setLoading(true);
+
+      const response = await api.post("/Company/inventory/overview");
+      const data = response.data;
+      console.log("First:" + data);
+
+      if (!data || typeof data !== "object") throw new Error("Resposta inválida do servidor");
+
+      setOverview({
+        totalProducts: data.totalProducts,
+        lowInventory: data.lowInventory,
+        criticalInventory: data.criticalInventory,
+        totalValue: data.totalValue,
+      });
+
+      const formatted = (data.products || []).map((p, index) => ({
+        id: p.id ?? p._id ?? p.code ?? `generated-${index}`,
+        name: p.name,
+        code: p.code,
+        category: p.category,
+        quantity: p.quantity,
+        minQuantity: p.minQuantity,
+        unitPrice: p.unitPrice,
+        status: p.status,
+        totalValue: p.totalValue,
+      }));
+
+      setProducts(formatted);
+    } catch (err) {
+      Alert.alert("Erro", "Erro ao carregar inventário");
+    } finally {
+      setLoading(false);
+      setRefreshing(false);
+    }
+  };
+
+  useEffect(() => {
+    if (!authLoading && !user) navigation.navigate('Login');
+    if (!authLoading && user) fetchInventory();
+  }, [authLoading, user]);
+
   const filteredProducts = useMemo(() => {
-    let filtered = [...allProducts];
-    
-    if (category.length > 0) {
-      filtered = filtered.filter(product => 
-        category.includes(product.category)
-      );
-    } else {
-      return [];
+    let filtered = [...products];
+
+    if (categoryFilter.length > 0 && categoryFilter.length < CATEGORY_OPTIONS.length) {
+      filtered = filtered.filter(product => categoryFilter.includes(product.category));
     }
-    
-    if (status.length > 0) {
-      filtered = filtered.filter(product => 
-        status.includes(product.status)
-      );
-    } else {
-      return [];
+
+    if (statusFilter.length > 0 && statusFilter.length < STATUS_OPTIONS.length) {
+      filtered = filtered.filter(product => statusFilter.includes(product.status));
     }
-  
+
     if (search.trim()) {
       const searchLower = search.toLowerCase().trim();
-      filtered = filtered.filter(product => 
-        product.product.toLowerCase().includes(searchLower) ||
-        product.code.toLowerCase().includes(searchLower) ||
-        product.id.toLowerCase().includes(searchLower)
+      filtered = filtered.filter(product =>
+        product.name?.toLowerCase().includes(searchLower) ||
+        product.code?.toLowerCase().includes(searchLower)
       );
     }
-  
+
     return filtered;
-  }, [search, category, status]);
-  
+  }, [search, categoryFilter, statusFilter, products]);
 
   const handleInventory = () => {
-    navigation.navigate("NewProduct")
+    navigation.navigate("NewProduct", {
+      onSuccess: () => fetchInventory()
+    });
+  };
+
+  const onRefresh = () => fetchInventory(true);
+
+  if (authLoading || (loading && !refreshing)) {
+    return (
+      <SafeAreaView style={commonUserStyles.safeArea}>
+        <Header title="Estoque" onMenuPress={() => setIsSidebarOpen(true)} />
+        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+          <ActivityIndicator size="large" color={globalStyle.primary} />
+          <Text style={{ color: '#6B7280', marginTop: 10 }}>Carregando dados...</Text>
+        </View>
+      </SafeAreaView>
+    );
   }
 
   return (
     <SafeAreaView style={commonUserStyles.safeArea}>
-      <Header 
+      <Header
         onMenuPress={() => setIsSidebarOpen(true)}
         title="Estoque"
       />
-      
-      <ScrollView style={commonUserStyles.screenBlock}>
+
+      <ScrollView
+        style={commonUserStyles.screenBlock}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+            colors={[globalStyle.primary]}
+          />
+        }
+      >
         <Text style={commonUserStyles.screenTitle}>
           Estoque
         </Text>
@@ -99,38 +173,38 @@ const Inventory = () => {
         <AccessibleView style={styles.productContainer}>
           <ProductCard
             title="Total de Produtos"
-            value={4}
-            icon={<Box color={globalStyle.primary}/>}
+            value={overview.totalProducts}
+            icon={<Box color={globalStyle.primary} />}
             color={globalStyle.primary}
           />
 
           <ProductCard
             title="Estoque Baixo"
-            value={2}
-            icon={<TrendingDown color="#CA8A04"/>}
+            value={overview.lowInventory}
+            icon={<TrendingDown color="#CA8A04" />}
             color="#CA8A04"
             extra="Atenção necessária"
           />
 
           <ProductCard
             title="Crítico"
-            value={0}
-            icon={<TriangleAlert color="#DC2626"/>}
+            value={overview.criticalInventory}
+            icon={<TriangleAlert color="#DC2626" />}
             color="#dc2626"
             extra="Reposição urgente"
           />
 
           <ProductCard
             title="Valor Total"
-            value="R$ 11202.20"
-            icon={<Package color={globalStyle.primary}/>}
+            value={formatCurrency(overview.totalValue)}
+            icon={<Package color={globalStyle.primary} />}
             color={globalStyle.primary}
           />
         </AccessibleView>
-        
+
         <View style={commonUserStyles.filterContainer}>
-          <Input 
-            placeholder="Buscar produtos por nome, código..." 
+          <Input
+            placeholder="Buscar produtos por nome"
             styleInput={commonUserStyles.inputVariant}
             onChangeText={setSearch}
             value={search}
@@ -139,34 +213,26 @@ const Inventory = () => {
           <AccessibleView style={commonUserStyles.filters}>
             <StatusFilter
               title="Filtrar Categoria"
-              filters={[
-                { id: 1, label: 'Roupas' },
-                { id: 2, label: 'Calçados' },
-                { id: 3, label: 'Acessórios' },
-                { id: 4, label: 'Eletrônicos' },
-              ]}
-              onFilterChange={setCategory}
-              containerStyle={{width: "49%"}}
+              filters={CATEGORY_OPTIONS.map((cat, idx) => ({ id: idx + 1, label: cat }))}
+              selectedFilters={categoryFilter}
+              onFilterChange={setCategoryFilter}
+              containerStyle={{ width: "49%" }}
             />
 
             <StatusFilter
               title="Filtrar Status"
-              filters={[
-                { id: 1, label: 'Normal' },
-                { id: 2, label: 'Baixo' },
-                { id: 3, label: 'Crítico' },
-                { id: 4, label: 'Esgotado' },
-              ]}
-              onFilterChange={setStatus}
-              containerStyle={{width: "49%"}}
+              filters={STATUS_OPTIONS.map((sts, idx) => ({ id: idx + 1, label: sts }))}
+              selectedFilters={statusFilter}
+              onFilterChange={setStatusFilter}
+              containerStyle={{ width: "49%" }}
             />
           </AccessibleView>
         </View>
 
         <Text style={commonUserStyles.resultCount}>
           {filteredProducts.length} {filteredProducts.length === 1 ? 'produto encontrado' : 'produtos encontrados'}
-          </Text>
-        
+        </Text>
+
         <ProductsInfo
           products={filteredProducts}
         />
