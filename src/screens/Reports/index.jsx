@@ -83,19 +83,18 @@ const Reports = () => {
     }
   };
 
-
   useEffect(() => {
-  if (pageLoading) return;
+    if (pageLoading) return;
 
-  if (!isAuthenticated) {
-    navigation.navigate("Login");
-    return;
-  }
+    if (!isAuthenticated) {
+      navigation.navigate("Login");
+      return;
+    }
 
-  if (companyId) {
-    fetchOverview(period);
-  }
-}, [pageLoading, isAuthenticated, companyId]);
+    if (user?.companyId) {
+      fetchOverview(period);
+    }
+  }, [pageLoading, isAuthenticated, user]);
 
 
   const handlePeriodChange = (value) => {

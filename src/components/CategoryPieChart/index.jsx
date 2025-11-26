@@ -48,6 +48,7 @@ const CategoryPieChart = ({ data }) => {
         backgroundColor="transparent"
         paddingLeft="5"
         center={[10, 0]}
+        hasLegend={true}
       />
     </View>
   );

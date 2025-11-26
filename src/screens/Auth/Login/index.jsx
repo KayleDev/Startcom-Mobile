@@ -15,43 +15,48 @@ import Logo from '../../../assets/StartComLogo.png';
 
 import AccessibleView from "../../../components/AccessibleView";
 
-const Login = () => {
-  const navigation = useNavigation();
-  const { signIn } = useAuth();
+  const Login = () => {
+    const navigation = useNavigation();
+    const { signIn } = useAuth();
 
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [checked, setChecked] = useState(false);
-  const [loading, setLoading] = useState(false);
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [checked, setChecked] = useState(false);
+    const [loading, setLoading] = useState(false);
 
-  const handleLogin = async () => {
-    if (!email || !password) {
-      Alert.alert("Erro", "Preencha todos os campos!");
-      return;
-    }
-
-    setLoading(true);
-
-    try {
-      const data = await loginAPI({ email, password });
-
-      if (!data?.access_token) {
-        Alert.alert("Erro", "Resposta do servidor inválida");
+    const handleLogin = async () => {
+      if (!email || !password) {
+        Alert.alert("Erro", "Preencha todos os campos!");
         return;
       }
 
-      await signIn(
-        { email },
-        data.access_token
-      );
+      setLoading(true);
 
-      Alert.alert("Sucesso", "Login realizado!");
-    } catch (error) {
-      Alert.alert("Erro", "Usuário ou senha inválidos");
-    } finally {
-      setLoading(false);
-    }
-  };
+      try {
+        const data = await loginAPI({ email, password });
+
+        if (!data?.access_token) {
+          Alert.alert("Erro", "Resposta do servidor inválida");
+          return;
+        }
+
+        await signIn(
+          {
+            email: data.email,
+            name: data.name,
+            companyId: data.companyId,
+          },
+          data.access_token
+        );
+
+        Alert.alert("Sucesso", "Login realizado!");
+      } catch (error) {
+        Alert.alert("Erro", "Usuário ou senha inválidos");
+      } finally {
+        setLoading(false);
+      }
+    };
+
 
   return (
     <AccessibleView style={styles.container}>
