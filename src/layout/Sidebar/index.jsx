@@ -13,12 +13,17 @@ const Sidebar = ({ isOpen, onClose, navigation, currentRoute }) => {
   const fadeAnim = useRef(new Animated.Value(0)).current;
 
   const menuItems = [
-    { id: 1, name: 'Dashboard', icon: ChartColumn, route: 'Dashboard' },
+    /*{ id: 1, name: 'Dashboard', icon: ChartColumn, route: 'Dashboard' },
     { id: 2, name: 'Estoque', icon: Package, route: 'Inventory' },
     { id: 3, name: 'Clientes', icon: Users, route: 'Clients' },
     { id: 4, name: 'Vendas', icon: ShoppingCart, route: 'Sales' },
     { id: 5, name: 'Relatórios', icon: Clipboard, route: 'Reports' },
-    { id: 6, name: 'Configurações', icon: Settings, route: 'Settings' },
+    { id: 6, name: 'Configurações', icon: Settings, route: 'Settings' },*/
+    { id: 1, name: 'Dashboard', icon: ChartColumn, route: 'Dashboard' },
+    { id: 2, name: 'Estoque', icon: Package, route: 'Inventory' },
+    { id: 3, name: 'Clientes', icon: Users, route: 'Clients' },
+    { id: 4, name: 'Vendas', icon: ShoppingCart, route: 'Sales' },
+    { id: 5, name: 'Configurações', icon: Settings, route: 'Settings' },
   ];
 
   useEffect(() => {

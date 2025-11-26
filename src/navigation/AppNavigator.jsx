@@ -41,11 +41,12 @@ export default function AppNavigator() {
         {user ? (
           // ========== Private Routes ==========
           <>
-            <Stack.Screen name="Dashboard" component={Dashboard} />
+            {/*<Stack.Screen name="Dashboard" component={Dashboard} />*/}
+            <Stack.Screen name="Dashboard" component={Reports}/>
             <Stack.Screen name="Sales" component={Sales}/>
             <Stack.Screen name="Clients" component={Clients}/>
             <Stack.Screen name="Inventory" component={Inventory}/>
-            <Stack.Screen name="Reports" component={Reports}/>
+            {/*<Stack.Screen name="Reports" component={Reports}/>*/}
             <Stack.Screen name="Settings" component={Settings}/>
 
             <Stack.Screen name="NewSale" component={NewSale}/>

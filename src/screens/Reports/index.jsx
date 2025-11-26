@@ -38,12 +38,17 @@ const Reports = () => {
     <SafeAreaView style={commonUserStyles.safeArea}>
       <Header 
         onMenuPress={() => setIsSidebarOpen(true)}
-        title="Relatórios"
+        /*title="Relatórios"*/
+        title="Dashboard"
       />
 
       <ScrollView style={commonUserStyles.screenBlock}>
-        <Text style={commonUserStyles.screenTitle}>
+        {/*<Text style={commonUserStyles.screenTitle}>
           Relatórios
+        </Text>*/}
+
+        <Text style={commonUserStyles.screenTitle}>
+          Dashboard
         </Text>
       
         <Text style={commonUserStyles.screenDescription}>
