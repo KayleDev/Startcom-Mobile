@@ -33,7 +33,7 @@ const STATUS_OPTIONS = [
 const Inventory = () => {
   const navigation = useNavigation();
   const route = useRoute();
-  const { user, loading: authLoading } = useAuth();
+  const { user, isAuthenticated, loading: authLoading } = useAuth();
 
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [search, setSearch] = useState("");
@@ -91,7 +91,7 @@ const Inventory = () => {
   useEffect(() => {
     if (!authLoading && !user) navigation.navigate('Login');
     if (!authLoading && user) fetchInventory();
-  }, [authLoading, user]);
+  }, [authLoading, isAuthenticated, user]);
 
   const filteredProducts = useMemo(() => {
     let filtered = [...products];

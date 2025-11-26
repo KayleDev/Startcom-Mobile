@@ -3,8 +3,7 @@ import { View, ScrollView, Text, ActivityIndicator, Alert, RefreshControl } from
 import { useNavigation, useRoute, useFocusEffect } from '@react-navigation/native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import api from '../../services/api.js';
-
+import api from '../../services/api';
 import Header from '../../layout/Header';
 import Sidebar from '../../layout/Sidebar';
 import Button from '../../components/Button';
@@ -13,24 +12,23 @@ import Input from '../../components/Input';
 import StatusFilter from '../../components/StatusFilter';
 import ClientCard from '../../components/ClientCard';
 import AccessibleView from '../../components/AccessibleView';
-
 import { useAuth } from '../../contexts/AuthContext';
-
 import { styles } from './styles';
 import { commonUserStyles } from '../../styles/commonUserStyles.js';
 import { globalStyle } from '../../styles/globalStyle.js';
 import { formatCurrency, formatDateBR, formatPHONE } from '../../utils/masks.js';
-
 import { Plus, UserRound, Star, Calendar, Smile } from 'lucide-react-native';
+
+const STATUS_LABELS = ['VIP', 'Premium', 'Regular'];
 
 const Clients = () => {
   const navigation = useNavigation();
   const route = useRoute();
-  const { user, loading: authLoading } = useAuth();
+  const { user, isAuthenticated ,loading: authLoading } = useAuth();
 
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [search, setSearch] = useState('');
-  const [selectedStatuses, setSelectedStatuses] = useState(['VIP', 'Premium', 'Regular']);
+  const [selectedStatuses, setSelectedStatuses] = useState(STATUS_LABELS);
 
   const [clients, setClients] = useState([]);
   const [overview, setOverview] = useState({
@@ -43,18 +41,6 @@ const Clients = () => {
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
 
-  const formatPHONE = (phone) => {
-    if (!phone) return 'Não Informado';
-    const cleaned = phone.replace(/\D/g, '');
-    if (cleaned.length === 11) {
-      return `(${cleaned.slice(0, 2)}) ${cleaned.slice(2, 7)}-${cleaned.slice(7)}`;
-    }
-    if (cleaned.length === 10) {
-      return `(${cleaned.slice(0, 2)}) ${cleaned.slice(2, 6)}-${cleaned.slice(6)}`;
-    }
-    return phone;
-  };
-
   const fetchOverviewAndClients = async (isRefresh = false) => {
     try {
       if (isRefresh) {
@@ -62,17 +48,14 @@ const Clients = () => {
       } else {
         setLoading(true);
       }
-
       const token = await AsyncStorage.getItem('@app:token');
       if (!token) {
         Alert.alert('Erro', 'Sessão expirada. Faça login novamente.');
         navigation.navigate('Login');
         return;
       }
-
       const response = await api.post("/Company/clients/overview_full");
       const data = response.data;
-
       if (data.status === 'success') {
         setOverview({
           total: data.overview?.total || 0,
@@ -80,10 +63,9 @@ const Clients = () => {
           newThisMonth: data.overview?.newThisMonth || 0,
           averageSatisfaction: data.overview?.averageSatisfaction || 0,
         });
-
         const formattedClients = (data.overview?.clients || [])
-          .map((c) => ({
-            id: c.id || c._id,
+          .map((c, idx) => ({
+            id: c.id || c._id || `client-${idx}`,
             name: c.name,
             badge: c.category
               ? c.category[0].toUpperCase() + c.category.slice(1)
@@ -98,12 +80,10 @@ const Clients = () => {
           .sort((a, b) => {
             if (!a.rawLastPurchase) return 1;
             if (!b.rawLastPurchase) return -1;
-
             const dateA = new Date(a.rawLastPurchase);
             const dateB = new Date(b.rawLastPurchase);
             return dateB - dateA;
           });
-
         setClients(formattedClients);
       } else {
         throw new Error('Erro na resposta da API.');
@@ -131,7 +111,7 @@ const Clients = () => {
     if (!authLoading && !user) {
       navigation.navigate('Login');
     }
-  }, [authLoading, user]);
+  }, [authLoading, isAuthenticated, user]);
 
   const filteredClients = useMemo(() => {
     let filtered = clients;
@@ -152,11 +132,7 @@ const Clients = () => {
   }, [clients, search, selectedStatuses]);
 
   const handleNewClient = () => {
-    navigation.navigate('NewClient', {
-      onSuccess: () => {
-        fetchOverviewAndClients();
-      },
-    });
+    navigation.navigate('NewClient');
   };
 
   const onRefresh = () => {
@@ -178,7 +154,6 @@ const Clients = () => {
   return (
     <SafeAreaView style={commonUserStyles.safeArea}>
       <Header title="Clientes" onMenuPress={() => setIsSidebarOpen(true)} />
-
       <ScrollView
         style={commonUserStyles.screenBlock}
         refreshControl={
@@ -259,9 +234,9 @@ const Clients = () => {
 
         <AccessibleView style={styles.clientContainer}>
           {filteredClients.length > 0 ? (
-            filteredClients.map((client, index) => (
+            filteredClients.map((client, idx) => (
               <ClientCard
-                key={client.id || index}
+                key={client.id ? String(client.id) : `client-${idx}`}
                 {...client}
                 onPress={() => navigation.navigate('ClientDetails', { clientId: client.id })}
               />
@@ -282,7 +257,6 @@ const Clients = () => {
           )}
         </AccessibleView>
       </ScrollView>
-
       <Sidebar
         isOpen={isSidebarOpen}
         onClose={() => setIsSidebarOpen(false)}
