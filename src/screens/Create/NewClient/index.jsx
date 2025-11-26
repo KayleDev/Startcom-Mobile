@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   ActivityIndicator,
 } from 'react-native';
+import { formatPHONE } from '../../../utils/masks';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -145,7 +146,7 @@ const NewClient = () => {
             <Input
               label="Telefone"
               placeholder="(00) 00000-0000"
-              value={formData.phone}
+              value={formatPHONE(formData.phone)}
               onChangeText={value => handleInputChange('phone', value)}
               editable={!loading}
               keyboardType="phone-pad"

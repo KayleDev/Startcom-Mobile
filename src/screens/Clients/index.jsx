@@ -19,6 +19,7 @@ import { useAuth } from '../../contexts/AuthContext';
 import { styles } from './styles';
 import { commonUserStyles } from '../../styles/commonUserStyles.js';
 import { globalStyle } from '../../styles/globalStyle.js';
+import { formatCurrency, formatDateBR, formatPHONE } from '../../utils/masks.js';
 
 import { Plus, UserRound, Star, Calendar, Smile } from 'lucide-react-native';
 
@@ -26,7 +27,7 @@ const Clients = () => {
   const navigation = useNavigation();
   const route = useRoute();
   const { user, loading: authLoading } = useAuth();
-  
+
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [search, setSearch] = useState('');
   const [selectedStatuses, setSelectedStatuses] = useState(['VIP', 'Premium', 'Regular']);
@@ -42,7 +43,7 @@ const Clients = () => {
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
 
-  const formatPhone = (phone) => {
+  const formatPHONE = (phone) => {
     if (!phone) return 'Não Informado';
     const cleaned = phone.replace(/\D/g, '');
     if (cleaned.length === 11) {
@@ -54,20 +55,6 @@ const Clients = () => {
     return phone;
   };
 
-  const formatDateBR = (dateString) => {
-    if (!dateString) return 'Ainda não comprou';
-    const date = new Date(dateString);
-    if (isNaN(date.getTime())) return 'Ainda não comprou';
-    return date.toLocaleDateString('pt-BR');
-  };
-
-  const formatCurrency = (value) => {
-    return new Intl.NumberFormat('pt-BR', {
-      style: 'currency',
-      currency: 'BRL'
-    }).format(value || 0);
-  };
-
   const fetchOverviewAndClients = async (isRefresh = false) => {
     try {
       if (isRefresh) {
@@ -77,7 +64,6 @@ const Clients = () => {
       }
 
       const token = await AsyncStorage.getItem('@app:token');
-      
       if (!token) {
         Alert.alert('Erro', 'Sessão expirada. Faça login novamente.');
         navigation.navigate('Login');
@@ -85,7 +71,6 @@ const Clients = () => {
       }
 
       const response = await api.post("/Company/clients/overview_full");
-
       const data = response.data;
 
       if (data.status === 'success') {
@@ -104,10 +89,10 @@ const Clients = () => {
               ? c.category[0].toUpperCase() + c.category.slice(1)
               : 'Regular',
             email: c.email || 'Não Informado',
-            phone: formatPhone(c.phone),
+            phone: formatPHONE(c.phone),
             location: c.address || c.city || 'Não Informado',
             totalSpent: formatCurrency(c.totalSpent),
-            lastPurchase: formatDateBR(c.lastPurchase),
+            lastPurchase: formatDateBR(c.lastPurchase) || "Não houve compra",
             rawLastPurchase: c.lastPurchase,
           }))
           .sort((a, b) => {
@@ -124,9 +109,8 @@ const Clients = () => {
         throw new Error('Erro na resposta da API.');
       }
     } catch (error) {
-      console.error('Erro ao buscar clientes:', error);
       Alert.alert(
-        'Erro', 
+        'Erro',
         error.response?.data?.message || error.message || 'Erro ao carregar clientes.'
       );
     } finally {
@@ -151,11 +135,9 @@ const Clients = () => {
 
   const filteredClients = useMemo(() => {
     let filtered = clients;
-
     if (selectedStatuses.length > 0 && selectedStatuses.length < 3) {
       filtered = filtered.filter((c) => selectedStatuses.includes(c.badge));
     }
-
     if (search.trim()) {
       const term = search.toLowerCase();
       filtered = filtered.filter(
@@ -166,7 +148,6 @@ const Clients = () => {
           c.location.toLowerCase().includes(term)
       );
     }
-
     return filtered;
   }, [clients, search, selectedStatuses]);
 
@@ -198,7 +179,7 @@ const Clients = () => {
     <SafeAreaView style={commonUserStyles.safeArea}>
       <Header title="Clientes" onMenuPress={() => setIsSidebarOpen(true)} />
 
-      <ScrollView 
+      <ScrollView
         style={commonUserStyles.screenBlock}
         refreshControl={
           <RefreshControl
@@ -279,9 +260,9 @@ const Clients = () => {
         <AccessibleView style={styles.clientContainer}>
           {filteredClients.length > 0 ? (
             filteredClients.map((client, index) => (
-              <ClientCard 
-                key={client.id || index} 
-                {...client} 
+              <ClientCard
+                key={client.id || index}
+                {...client}
                 onPress={() => navigation.navigate('ClientDetails', { clientId: client.id })}
               />
             ))
@@ -294,7 +275,7 @@ const Clients = () => {
                 fontSize: 16,
               }}
             >
-              {search || selectedStatuses.length < 3 
+              {search || selectedStatuses.length < 3
                 ? 'Nenhum cliente encontrado com os filtros aplicados.'
                 : 'Nenhum cliente cadastrado ainda.'}
             </Text>
