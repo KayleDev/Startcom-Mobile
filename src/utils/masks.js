@@ -49,7 +49,7 @@ export const formatCNPJ = (value) => {
 // Examples:
 // "11987654321" -> "(11) 98765-4321"
 // "1134567890"  -> "(11) 3456-7890"
-export const formatPHONE = (value) => {
+export const formatPhone = (value) => {
   // Remove all non-digit characters
   const cleaned = value.replace(/\D/g, "");
   
@@ -63,4 +63,77 @@ export const formatPHONE = (value) => {
   } else {
     return cleaned.replace(/(\d{2})(\d{5})(\d{4})/, "($1) $2-$3"); // (11) 98765-4321
   }
+};
+
+// Utility function to format Brazilian currency (BRL)
+// Examples:
+// "1247.3" -> "R$ 1.247,30"
+// "0" -> "R$ 0,00"
+export const formatCurrency = (value) => {
+  if (value == null || value === "") return "R$ 0,00";
+
+  const number = typeof value === "number" ? value : parseFloat(value.replace(",", "."));
+
+  if (isNaN(number)) return "R$ 0,00";
+
+  return number.toLocaleString("pt-BR", {
+    style: "currency",
+    currency: "BRL",
+  });
+};
+
+// Utility function to format percentage values in Brazilian format
+// Example: 83.25 -> "83,25%"
+export const formatPercent = (value) => {
+  if (value == null || value === "") return "0%";
+
+  const number = typeof value === "number" ? value : parseFloat(value);
+
+  if (isNaN(number)) return "0%";
+
+  return `${number.toFixed(2).replace(".", ",")}%`;
+};
+
+// Utility function to format dates from "YYYY-MM-DD" to "DD/MM/YYYY"
+// Example: "2025-11-01" -> "01/11/2025"
+export const formatDateBR = (value) => {
+  if (!value || typeof value !== "string") return "";
+
+  const cleaned = value.split("T")[0];
+
+  const [year, month, day] = cleaned.split("-");
+  if (!year || !month || !day) return "";
+
+  return `${day}/${month}/${year}`;
+};
+
+export const formatMonthLabel = (value) => {
+  if (!value) return "";
+
+  if (/^\d{4}-\d{2}-\d{2}$/.test(value)) {
+    return formatDateBR(value);
+  }
+
+  const englishToBr = {
+    january: "Janeiro",
+    february: "Fevereiro",
+    march: "Março",
+    april: "Abril",
+    may: "Maio",
+    june: "Junho",
+    july: "Julho",
+    august: "Agosto",
+    september: "Setembro",
+    october: "Outubro",
+    november: "Novembro",
+    december: "Dezembro",
+  };
+
+  const lower = value.toLowerCase();
+
+  if (englishToBr[lower]) {
+    return englishToBr[lower];
+  }
+
+  return value;
 };
