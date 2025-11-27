@@ -1,27 +1,11 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, FlatList } from 'react-native';
-import { Eye } from 'lucide-react-native';
 import { styles } from './styles';
+import { formatCurrency } from '../../utils/masks';
 import { globalStyle } from '../../styles/globalStyle';
 import AccessibleView from '../AccessibleView';
 
-const SalesInfo = ({ 
-  orders = [],
-  onViewOrder
-}) => {
-  
-  const getStatusStyle = (status) => {
-    switch (status) {
-      case 'Concluída':
-        return styles.statusConcluida;
-      case 'Pendente':
-        return styles.statusPendente;
-      case 'Cancelada':
-        return styles.statusCancelada;
-      default:
-        return styles.statusDefault;
-    }
-  };
+const SalesInfo = ({ orders = [], onViewOrder }) => {
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -30,16 +14,6 @@ const SalesInfo = ({
 
   const renderOrderCard = ({ item }) => (
     <AccessibleView style={styles.card}>
-      <View style={styles.cardHeader}>
-        <Text style={styles.orderId}>{item.id}</Text>
-        <TouchableOpacity 
-          style={styles.viewButton}
-          onPress={() => onViewOrder && onViewOrder(item)}
-        >
-          <Eye size={20} color={globalStyle.primary} />
-        </TouchableOpacity>
-      </View>
-
       <AccessibleView style={styles.cardBody}>
         <AccessibleView style={styles.infoRow}>
           <Text style={styles.label}>Cliente</Text>
@@ -53,18 +27,12 @@ const SalesInfo = ({
 
         <AccessibleView style={styles.infoRow}>
           <Text style={styles.label}>Valor</Text>
-          <Text style={styles.valuePrice}>{item.value}</Text>
+          <Text style={styles.valuePrice}>{formatCurrency(item.amount)}</Text>
         </AccessibleView>
 
         <AccessibleView style={styles.infoRow}>
           <Text style={styles.label}>Itens</Text>
           <Text style={styles.value}>{item.items}</Text>
-        </AccessibleView>
-      </AccessibleView>
-
-      <AccessibleView style={styles.cardFooter}>
-        <AccessibleView style={[styles.statusBadge, getStatusStyle(item.status)]}>
-          <Text style={styles.statusText}>{item.status}</Text>
         </AccessibleView>
       </AccessibleView>
     </AccessibleView>

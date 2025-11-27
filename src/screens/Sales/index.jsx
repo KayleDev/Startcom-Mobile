@@ -1,198 +1,271 @@
-import { useState, useMemo } from 'react';
-import { View, ScrollView, Text } from 'react-native';
+import { useState, useEffect } from 'react';
+import { View, ScrollView, Text, ActivityIndicator } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Header from '../../layout/Header';
 import Sidebar from '../../layout/Sidebar';
 import Button from '../../components/Button';
-
-import { styles } from './styles';
-import { commonUserStyles } from '../../styles/commonUserStyles.js';
 import SalesCard from '../../components/SalesCard';
+import SalesInfo from '../../components/SalesInfo';
+import AccessibleView from '../../components/AccessibleView';
 import Input from '../../components/Input';
 import PeriodSelector from '../../components/PeriodSelector';
-import StatusFilter from '../../components/StatusFilter';
-
-import { Plus, DollarSign, ShoppingCart, TrendingUp, Funnel} from 'lucide-react-native';
-import { globalStyle } from '../../styles/globalStyle.js';
-import SalesInfo from '../../components/SalesInfo/index.jsx';
-
-import AccessibleView from '../../components/AccessibleView';
+import { Plus, DollarSign, ShoppingCart, TrendingUp } from 'lucide-react-native';
+import { globalStyle } from '../../styles/globalStyle';
+import { commonUserStyles } from '../../styles/commonUserStyles';
+import api from '../../services/api';
+import { formatCurrency } from '../../utils/masks';
+import styles from "./styles";
 
 const Sales = () => {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const navigation = useNavigation();
   const route = useRoute();
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
-  const [search, setSearch] = useState("");
-  const [selectedPeriod, setSelectedPeriod] = useState("Este Mês");
-  const [selectedStatuses, setSelectedStatuses] = useState(['Concluída', 'Pendente', 'Cancelada']);
+  const [search, setSearch] = useState('');
+  const [selectedPeriod, setSelectedPeriod] = useState('Este Mês');
 
-  const allOrders = [
-    { id: '#001', client: 'Maria Silva', date: '2025-10-15', value: 'R$ 256,80', status: 'Concluída', items: '3 itens' },
-    { id: '#002', client: 'João Santos', date: '2025-10-14', value: 'R$ 189,50', status: 'Cancelada', items: '2 itens' },
-    { id: '#003', client: 'Ana Costa', date: '2025-10-10', value: 'R$ 445,29', status: 'Concluída', items: '5 itens' },
-    { id: '#004', client: 'Carlos Souza', date: '2025-09-05', value: 'R$ 89,99', status: 'Cancelada', items: '1 item' },
-    { id: '#005', client: 'Pedro Alves', date: '2025-10-13', value: 'R$ 320,00', status: 'Concluída', items: '4 itens' },
-    { id: '#006', client: 'Juliana Martins', date: '2025-10-12', value: 'R$ 150,00', status: 'Pendente', items: '2 itens' },
-    { id: '#007', client: 'Roberto Lima', date: '2025-08-20', value: 'R$ 75,50', status: 'Cancelada', items: '1 item' },
-    { id: '#008', client: 'Fernanda Rocha', date: '2025-10-11', value: 'R$ 520,00', status: 'Concluída', items: '6 itens' },
-  ];
+  const [sales, setSales] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  const filterByPeriod = (orders, period) => {
-    const today = new Date();
-    
-    return orders.filter(order => {
-      const orderDate = new Date(order.date);
-      
-      switch(period) {
-        case 'Hoje':
-          return orderDate.toDateString() === today.toDateString();
-        
-        case 'Esta Semana':
-          const weekAgo = new Date(today);
-          weekAgo.setDate(today.getDate() - 7);
-          return orderDate >= weekAgo && orderDate <= today;
-        
-        case 'Este Mês':
-          return orderDate.getMonth() === today.getMonth() && 
-                 orderDate.getFullYear() === today.getFullYear();
-        
-        case 'Este Ano':
-          return orderDate.getFullYear() === today.getFullYear();
-        
-        default:
-          return true;
-      }
-    });
+  const [overviewLoading, setOverviewLoading] = useState(true);
+  const [overview, setOverview] = useState({
+    todayTotal: 0,
+    todayComparison: 0,
+    totalSales: 0,
+    weekSales: 0,
+    averageTicket: 0,
+    averageTicketComparison: 0,
+  });
+
+
+  const fetchOverview = async () => {
+    try {
+      setOverviewLoading(true);
+      const response = await api.post('/Company/sales/overview');
+      const data = response.data.overview;
+
+      setOverview({
+        todayTotal: data.today.total,
+        todayComparison: data.today.comparison,
+
+        totalSales: data.sales.total,
+        weekSales: data.sales.week,
+
+        averageTicket: data.ticket.average,
+        averageTicketComparison: data.ticket.comparison,
+      });
+    } catch (error) {
+      console.error('Erro ao carregar overview:', error.response?.data || error);
+    } finally {
+      setOverviewLoading(false);
+    }
   };
 
-  const filteredOrders = useMemo(() => {
-    let filtered = [...allOrders];
+  const fetchSales = async () => {
+    try {
+      setLoading(true);
+      const response = await api.post('/Company/sales/get_all');
+      const data = response.data.sales.map((sale) => ({
+        id: sale._id,
+        client: sale.clientName,
+        date: new Date(sale.date),
+        amount: sale.total,
+        items: sale.items.reduce((acc, item) => acc + item.quantity, 0),
+      }));
+      setSales(data);
+    } catch (error) {
+      console.error('Erro ao buscar vendas:', error.response?.data || error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-    filtered = filterByPeriod(filtered, selectedPeriod);
+  useEffect(() => {
+    fetchOverview();
+    fetchSales();
+  }, []);
 
-    if (selectedStatuses.length > 0) {
-      filtered = filtered.filter(order => 
-        selectedStatuses.includes(order.status)
-      );
-    } else {
-      return [];
+  const filteredSales = sales.filter((sale) => {
+    const today = new Date();
+    const saleDate = sale.date;
+
+    switch (selectedPeriod) {
+      case 'Hoje':
+        if (saleDate.toDateString() !== today.toDateString()) return false;
+        break;
+      case 'Esta Semana':
+        const weekAgo = new Date();
+        weekAgo.setDate(today.getDate() - 7);
+        if (saleDate < weekAgo || saleDate > today) return false;
+        break;
+      case 'Este Mês':
+        if (saleDate.getMonth() !== today.getMonth() || saleDate.getFullYear() !== today.getFullYear()) return false;
+        break;
+      case 'Este Ano':
+        if (saleDate.getFullYear() !== today.getFullYear()) return false;
+        break;
     }
 
     if (search.trim()) {
-      const searchLower = search.toLowerCase().trim();
-      filtered = filtered.filter(order => 
-        order.client.toLowerCase().includes(searchLower) ||
-        order.id.toLowerCase().includes(searchLower) ||
-        order.value.toLocaleLowerCase().includes(searchLower)
-      );
+      const s = search.toLowerCase();
+      if (
+        !sale.client.toLowerCase().includes(s) &&
+        !sale.id.toLowerCase().includes(s) &&
+        !String(sale.amount).toLowerCase().includes(s)
+      )
+        return false;
     }
 
-    return filtered;
-  }, [search, selectedPeriod, selectedStatuses]);
+    return true;
+  });
 
-  const handleSale = () => {
-    navigation.navigate("NewSale");
-  };
-
-  const handleViewOrder = (order) => {
-    console.log("Ver pedido:", order);
-  };
+  const handleNewSale = () => navigation.navigate('NewSale');
+  const handleViewOrder = (order) => console.log('Ver pedido:', order);
 
   return (
     <SafeAreaView style={commonUserStyles.safeArea}>
-      <Header 
-        onMenuPress={() => setIsSidebarOpen(true)}
-        title="Vendas"
-      />
+      <Header onMenuPress={() => setIsSidebarOpen(true)} title="Vendas" />
 
       <ScrollView style={commonUserStyles.screenBlock}>
-        <Text style={commonUserStyles.screenTitle}>
-          Vendas
-        </Text>
-            
-        <Text style={commonUserStyles.screenDescription}>
-          Gerencie todas as suas vendas e transações
-        </Text>
+        <Text style={commonUserStyles.screenTitle}>Vendas</Text>
+        <Text style={commonUserStyles.screenDescription}>Gerencie todas as suas vendas e transações</Text>
 
-        <Button 
+        <Button
           title={
             <View style={commonUserStyles.alignButtonText}>
-              <Plus size={20} color="#FFFFFF" />
+              <Plus size={20} color="#fff" />
               <Text style={commonUserStyles.saveText}>Nova Venda</Text>
-            </View>          
+            </View>
           }
-          onPress={handleSale}
+          onPress={handleNewSale}
         />
 
-        <AccessibleView style={styles.salesContainer}>
-          <SalesCard 
-            title="Vendas Hoje"
-            amount="R$ 1.247,50"
-            valuePlus="+12.5% vs ontem"
-            icon={<DollarSign color={globalStyle.primary}/>}
-            iconBgColor={globalStyle.primaryTransparent}
-          />
+        <AccessibleView style={commonUserStyles.salesOverview}>
+          {overviewLoading ? (
+            <View>
+              <SalesCard
+                title="Vendas Hoje"
+                amount={formatCurrency(overview.todayTotal)}
+                info={`${overview.todayComparison > 0 ? '+' : ''}${overview.todayComparison}% vs ontem`}
+                progress={
+                  overview.todayComparison > 0
+                    ? 'good'
+                    : overview.todayComparison < 0
+                    ? 'bad'
+                    : 'neutral'
+                }
+                icon={<DollarSign color={globalStyle.primary} />}
+                iconBgColor={globalStyle.primaryTransparent}
+              />
 
-          <SalesCard 
-            title="Total de Vendas"
-            amount="156"
-            valuePlus="+8 esta semana"
-            icon={<ShoppingCart color={globalStyle.primary}/>}
-            iconBgColor={globalStyle.primaryTransparent}
-          />
+              <SalesCard
+                title="Total de Vendas"
+                amount={overview.totalSales.toString()}
+                info={`${overview.weekSales} esta semana`}
+                progress={
+                  overview.weekSales > 0
+                    ? 'good'
+                    : overview.weekSales < 0
+                    ? 'bad'
+                    : 'neutral'
+                }
+                icon={<ShoppingCart color={globalStyle.primary} />}
+                iconBgColor={globalStyle.primaryTransparent}
+              />
 
-          <SalesCard 
-            title="Ticket Médio"
-            amount="R$ 89,50"
-            valuePlus="+5.2% este mês"
-            icon={<TrendingUp color={globalStyle.primary}/>}
-            iconBgColor={globalStyle.primaryTransparent}
-          />
+              <SalesCard
+                title="Ticket Médio"
+                amount={formatCurrency(overview.averageTicket)}
+                info={`${overview.averageTicketComparison > 0 ? '+' : ''}${overview.averageTicketComparison}% este mês`}
+                progress={
+                  overview.averageTicketComparison > 0
+                    ? 'good'
+                    : overview.averageTicketComparison < 0
+                    ? 'bad'
+                    : 'neutral'
+                }
+                icon={<TrendingUp color={globalStyle.primary} />}
+                iconBgColor={globalStyle.primaryTransparent}
+              />
+            </View>
+          ) : (
+            <View>
+              <SalesCard
+                title="Vendas Hoje"
+                amount={formatCurrency(overview.todayTotal)}
+                info={`${overview.todayComparison > 0 ? '+' : ''}${overview.todayComparison}% vs ontem`}
+                progress={
+                  overview.todayComparison > 0
+                    ? 'good'
+                    : overview.todayComparison < 0
+                    ? 'bad'
+                    : 'neutral'
+                }
+                icon={<DollarSign color={globalStyle.primary} />}
+                iconBgColor={globalStyle.primaryTransparent}
+              />
+
+              <SalesCard
+                title="Total de Vendas"
+                amount={overview.totalSales.toString()}
+                info={`${overview.weekSales} esta semana`}
+                progress={
+                  overview.weekSales > 0
+                    ? 'good'
+                    : overview.weekSales < 0
+                    ? 'bad'
+                    : 'neutral'
+                }
+                icon={<ShoppingCart color={globalStyle.primary} />}
+                iconBgColor={globalStyle.primaryTransparent}
+              />
+
+              <SalesCard
+                title="Ticket Médio"
+                amount={formatCurrency(overview.averageTicket)}
+                info={`${overview.averageTicketComparison > 0 ? '+' : ''}${overview.averageTicketComparison}% este mês`}
+                progress={
+                  overview.averageTicketComparison > 0
+                    ? 'good'
+                    : overview.averageTicketComparison < 0
+                    ? 'bad'
+                    : 'neutral'
+                }
+                icon={<TrendingUp color={globalStyle.primary} />}
+                iconBgColor={globalStyle.primaryTransparent}
+              />
+            </View>
+          )}
         </AccessibleView>
 
         <View style={commonUserStyles.filterContainer}>
-          <Input 
-            placeholder="Buscar Vendas por cliente, ID..." 
-            styleInput={commonUserStyles.inputVariant}
+          <Input
+            placeholder="Buscar Vendas por cliente, ID..."
             onChangeText={setSearch}
             value={search}
+            styleInput={commonUserStyles.inputVariant}
           />
 
-          <AccessibleView style={commonUserStyles.filters}>
-            <PeriodSelector
-              periods={["Hoje", "Esta Semana", "Este Mês", "Este Ano"]}
-              defaultPeriod="Este Mês"
-              containerStyle={{width: "49%", marginVertical: 0}}
-              onPeriodChange={setSelectedPeriod}
-            />
-
-            <StatusFilter
-              icon={<Funnel color={globalStyle.primary}/>}
-              title="Filtros"
-              filters={[
-                { id: 1, label: 'Concluída' },
-                { id: 2, label: 'Pendente' },
-                { id: 3, label: 'Cancelada' },
-              ]}
-              onFilterChange={setSelectedStatuses}
-              containerStyle={{width: "49%"}}
-            />
-          </AccessibleView>
+          <PeriodSelector
+            periods={['Hoje', 'Esta Semana', 'Este Mês', 'Este Ano']}
+            defaultPeriod="Este Mês"
+            onPeriodChange={setSelectedPeriod}
+          />
         </View>
 
         <Text style={commonUserStyles.resultCount}>
-          {filteredOrders.length} {filteredOrders.length === 1 ? 'venda encontrada' : 'vendas encontradas'}
+          {filteredSales.length} {filteredSales.length === 1 ? 'venda encontrada' : 'vendas encontradas'}
         </Text>
 
-        <SalesInfo 
-          orders={filteredOrders}
-          onViewOrder={handleViewOrder}
-        />
-
+        {loading ? (
+          <ActivityIndicator size="large" color={globalStyle.primary} />
+        ) : (
+          <SalesInfo orders={filteredSales} onViewOrder={handleViewOrder} />
+        )}
       </ScrollView>
 
+      
       <Sidebar
         isOpen={isSidebarOpen}
         onClose={() => setIsSidebarOpen(false)}
