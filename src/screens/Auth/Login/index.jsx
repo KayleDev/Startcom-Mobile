@@ -82,6 +82,8 @@ import AccessibleView from "../../../components/AccessibleView";
         value={password} 
         onChangeText={setPassword} 
       />
+
+{/*}
       <TouchableOpacity style={styles.linkTextFinal} onPress={() => navigation.navigate("ForgotPassword")}>
         <Text style={[styles.linkText, {marginTop: 0}]}>
           Esqueceu a senha?
@@ -106,13 +108,13 @@ import AccessibleView from "../../../components/AccessibleView";
           <Text style={styles.loginWithText}>Entrar com Apple</Text>
         </TouchableOpacity>
       </AccessibleView>
-
+*/}
       <Button
         title="Login" 
         onPress={handleLogin} 
         loading={loading} 
       />
-
+{/*}
       <View style={styles.keepConnectedContainer}>
         <TouchableOpacity
           onPress={() => setChecked(!checked)}
@@ -122,7 +124,7 @@ import AccessibleView from "../../../components/AccessibleView";
         </TouchableOpacity>
 
         <Text style={styles.keepConnectedText}>Manter-me conectado por 30 dias</Text>
-      </View>
+      </View>*/}
 
       <TouchableOpacity onPress={() => navigation.navigate("Register")}>
         <Text style={styles.linkText}>
